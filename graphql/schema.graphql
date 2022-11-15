@@ -1,0 +1,69 @@
+type Mutation {
+  createUser(user: CreateUser!): createUserResult
+    @aws_api_key
+    @aws_cognito_user_pools
+  updateUser(user: UpdateUser!): updateUserResult
+    @aws_api_key
+    @aws_cognito_user_pools
+
+  deleteUser(id: ID!): deleteUserResult @aws_api_key @aws_cognito_user_pools
+}
+
+type Query {
+  getUserByEmail(id: ID!): getUserResult @aws_api_key @aws_cognito_user_pools
+  getAllUserInfo:[User]  @aws_api_key @aws_cognito_user_pools
+  
+}
+
+union createUserResult = UserInfo | UserExists | Error
+union getUserResult = UserInfo | UserNotExists | Error
+union updateUserResult = UpdatedResult | UserNotExists | Error
+union deleteUserResult = DeletedResult | UserNotExists | Error
+
+
+
+
+
+input CreateUser {
+  id: ID!
+  cnic: String!
+  PHONE_NUMBER:String!
+}
+input UpdateUser {
+  id: ID!
+  attributeName: String
+  attributeValue: String
+}
+
+type DeletedResult @aws_api_key @aws_cognito_user_pools {
+  id: ID!
+  message: String
+}
+
+type UpdatedResult @aws_api_key @aws_cognito_user_pools {
+  id: ID!
+  message: String
+}
+
+type UserExists @aws_api_key @aws_cognito_user_pools {
+  message: String
+}
+
+type UserNotExists @aws_api_key @aws_cognito_user_pools {
+  message: String
+}
+
+type UserInfo @aws_api_key @aws_cognito_user_pools {
+  userInfo: String
+}
+
+type Error @aws_api_key @aws_cognito_user_pools {
+  message: String
+}
+
+type User @aws_api_key @aws_cognito_user_pools {
+  id: ID!
+  cnic: String!
+  PHONE_NUMBER:String!
+}
+

@@ -20,7 +20,7 @@ exports.handler = async (event: any, context: any) => {
     case "getAllUserInfo":
       return await getAllUserInfo();
     case "zkProfile":
-      return await zkProfile(event.arguments.name);
+      return await zkProfile(event.arguments.zkuser);
     default:
       return null;
   }

@@ -10,7 +10,7 @@ const params:UserObject={
 }
 async function main() {
     // console.log(await zkAPI("createProfile",params) );
-    // console.log(await zkAPI("revokeVerifiedUser",params) );
+    console.log(await zkAPI("revokeVerifiedUser",params) );
     // console.log(await zkAPI("getVerifiedUser",params) );
 
 }

@@ -7,7 +7,7 @@ type Mutation {
     @aws_cognito_user_pools
 
   deleteUser(id: ID!): deleteUserResult @aws_api_key @aws_cognito_user_pools
-  zkProfile(name:String):String @aws_api_key @aws_cognito_user_pools
+  zkProfile(zkuser:ZKUserInfo):String @aws_api_key @aws_cognito_user_pools
 }
 
 type Query {
@@ -36,6 +36,7 @@ input ZKUserInfo{
     publicAddress: String
     publicAddressAdmin: String
     optionalParams: String
+    bit:Boolean
   
 }
 type DeletedResult @aws_api_key @aws_cognito_user_pools {

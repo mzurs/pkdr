@@ -27,34 +27,35 @@ const wallet = new ethers.Wallet(_PKDR_PRIVATE_KEY, provider);
 const connectedWallet = contract.connect(wallet);
 
 const createProfile = async (params: UserObject): Promise<string> => {
-  console.log(params);
-  const privKeyDecimal: hex2decReturnParams = await hex2dec(params.privateKey);
-  const publicAddressDecimal = String(await hex2dec(params.publicAddress));
-  const publicAddressAdminDecimal = String(
-    await hex2dec(params.publicAddressAdmin)
-  );
-  const optionalParamsDecimal = String(await hex2dec(params.optionalParams));
+  // console.log(params);
+  // const privKeyDecimal: hex2decReturnParams = await hex2dec(params.privateKey);
+  // const publicAddressDecimal = String(await hex2dec(params.publicAddress));
+  // const publicAddressAdminDecimal = String(
+  //   await hex2dec(params.publicAddressAdmin)
+  // );
+  // const optionalParamsDecimal = String(await hex2dec(params.optionalParams));
 
-  const param: CreateProfile = {
-    cnic: params.cnic, //"4210177777773",
-    privKeyFirst: privKeyDecimal[0], //"249697928511749064481934707482023822598",
-    privKeySecond: privKeyDecimal[1], //"127222874392670729104785390335824196170",
-    publicAddress: "0",
-    publicAddressAdmin: "0",
-    optionalParams: "0",
-    bit: params.bit,
-  };
+  // const param: CreateProfile = {
+  //   cnic: params.cnic, //"4210177777773",
+  //   privKeyFirst: privKeyDecimal[0], //"249697928511749064481934707482023822598",
+  //   privKeySecond: privKeyDecimal[1], //"127222874392670729104785390335824196170",
+  //   publicAddress: "0",
+  //   publicAddressAdmin: "0",
+  //   optionalParams: "0",
+  //   bit: params.bit,
+  // };
 
-  console.log(param);
+  // console.log(param);
 
-  const result: boolean = await generateProof(param);
+  // const result: boolean = await generateProof(param);
+  const result=await connectedWallet.getVerifiedUser(params.publicAddress);
   console.log("Result: ", result);
-  if (result) {
+  if (!result) {
     try {
       console.log(params.publicAddress);
       const createPRofileResult: boolean = await connectedWallet.createProfile(
         params.publicAddress,
-        result,
+        true,
         { gasLimit: 50000 }
       );
       await listenForTransactionMine(createPRofileResult, provider);
@@ -66,6 +67,8 @@ const createProfile = async (params: UserObject): Promise<string> => {
       return error as unknown as string;
     }
   }
-  return result ? "Profile Verified On-Chain" : "Profile Verification Declined";
+  else{
+    return `Profile with Id ${params.publicAddress} already exists`
+  }
 };
 export default createProfile;

@@ -64,6 +64,21 @@ export class UsersStack extends cdk.Stack {
       projectionType: ProjectionType.KEYS_ONLY, //copied all data from table to GSI
     });
 
+    usersDatabaseDynamoDB.addGlobalSecondaryIndex({
+      indexName: "userNameIndex",
+      partitionKey: {
+        name: "USERNAME",
+        type: AttributeType.STRING,
+      },
+      // sortKey: {
+      //   name: "sk",
+      //   type: AttributeType.STRING,
+      // },
+      // readCapacity: 1,
+      // writeCapacity: 1,
+      projectionType: ProjectionType.KEYS_ONLY, //copied all data from table to GSI
+    });
+
     // // usersDatabaseDynamoDB.addGlobalSecondaryIndex({
     // //   indexName: "phoneNumberIndex",
     // //   partitionKey: {
@@ -148,7 +163,6 @@ export class UsersStack extends cdk.Stack {
       handler: "handler",
       runtime: Runtime.NODEJS_16_X,
       timeout: cdk.Duration.seconds(30),
-
     });
 
     const userApiServiceRole: iam.Role = new iam.Role(
@@ -234,6 +248,20 @@ export class UsersStack extends cdk.Stack {
         dataSourceName: usersLambdaDataSource.name,
       }
     );
+
+    const resolver_setUserName: appsync.CfnResolver = new appsync.CfnResolver(
+      this,
+      "resolver_setUserName",
+      {
+        apiId: pkdrFinanceUsersApi.attrApiId,
+        typeName: "Mutation",
+        fieldName: "setUserName",
+        dataSourceName: usersLambdaDataSource.name,
+      }
+    );
+    resolver_setUserName.node.addDependency(pkdrFinanceUsersApiSchema);
+    resolver_setUserName.node.addDependency(usersLambdaDataSource);
+
     resolver_zkProfile.node.addDependency(pkdrFinanceUsersApiSchema);
     resolver_zkProfile.node.addDependency(usersLambdaDataSource);
 

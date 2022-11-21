@@ -5,7 +5,9 @@ import deleteUser from "../mutations/admin/deleteUser/deleteUser";
 import preRegisterUser from "../query/users/preRegisterUser/preRegisterUser";
 import getAllUserInfo from "../query/admin/getAllUserInfo/getAllUserInfo";
 import zkProfile from "../mutations/users/createProfile/createProfile";
-// import preRegisterUser from "../query/users/preRegisterUser/preRegisterUser";
+import setUserName from "../mutations/users/setUserName/setUserName";
+
+
 exports.handler = async (event: any, context: any) => {
   switch (event.info.fieldName) {
     case "createUser":
@@ -21,6 +23,8 @@ exports.handler = async (event: any, context: any) => {
       return await getAllUserInfo();
     case "zkProfile":
       return await zkProfile(event.arguments.zkuser);
+    case "setUserName":
+      return await setUserName(event.arguments.setname);
     default:
       return null;
   }

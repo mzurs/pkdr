@@ -7,7 +7,10 @@ type Mutation {
     @aws_cognito_user_pools
 
   deleteUser(id: ID!): deleteUserResult @aws_api_key @aws_cognito_user_pools
-  zkProfile(zkuser:ZKUserInfo):String @aws_api_key @aws_cognito_user_pools
+  zkProfile(zkuser: ZKUserInfo): String @aws_api_key @aws_cognito_user_pools
+  setUserName(setname: SetUserName): String
+    @aws_api_key
+    @aws_cognito_user_pools
 }
 
 type Query {
@@ -30,14 +33,18 @@ input UpdateUser {
   attributeName: String
   attributeValue: String
 }
-input ZKUserInfo{
-    cnic:String
-    privateKey:String
-    publicAddress: String
-    publicAddressAdmin: String
-    optionalParams: String
-    bit:Boolean
-  
+input ZKUserInfo {
+  cnic: String
+  privateKey: String
+  publicAddress: String
+  publicAddressAdmin: String
+  optionalParams: String
+  bit: Boolean
+}
+
+input SetUserName {
+  id: ID!
+  userName: String!
 }
 type DeletedResult @aws_api_key @aws_cognito_user_pools {
   id: ID!

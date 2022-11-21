@@ -9,7 +9,7 @@ const zkProfile=async(name:string):Promise<string>=>{
         publicAddressAdmin: "0x2c5483B70D2FF43e5b7AF10435DE6Bd1303aa66b" ,
         optionalParams: "0",
         bit: false
-    }
+    } 
 
 return await zkProfileCreation(params);
     // return String(await zkAPI(name,params));

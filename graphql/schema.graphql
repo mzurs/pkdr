@@ -8,7 +8,8 @@ type Mutation {
 
   deleteUser(id: ID!): deleteUserResult @aws_api_key @aws_cognito_user_pools
   zkProfile(zkuser: ZKUserInfo): String @aws_api_key @aws_cognito_user_pools
-  setUserName(setname: SetUserName): String
+  setUserName(setname: SetUserName): String @aws_api_key @aws_cognito_user_pools
+  addContacts(user: UpdateContactList!): updateUserResult
     @aws_api_key
     @aws_cognito_user_pools
 }
@@ -27,6 +28,10 @@ input CreateUser {
   id: ID!
   cnic: String!
   PHONE_NUMBER: String!
+}
+input UpdateContactList {
+  id: ID!
+  attributeValue: String
 }
 input UpdateUser {
   id: ID!

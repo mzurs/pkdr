@@ -14,6 +14,10 @@ type SetUserName={
   id:string,
   userName:string
 }
+type UpdateContactList={
+  id:string;
+  attributeValue: string;
 
-export { User,UpdateUser,SetUserName};
+}
+export { User,UpdateUser,SetUserName,UpdateContactList};
 

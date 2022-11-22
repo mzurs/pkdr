@@ -227,6 +227,7 @@ export class UsersStack extends cdk.Stack {
         dataSourceName: usersLambdaDataSource.name,
       }
     );
+
     const resolver_getUserById: appsync.CfnResolver = new appsync.CfnResolver(
       this,
       "resolver_getUserById",
@@ -259,6 +260,21 @@ export class UsersStack extends cdk.Stack {
         dataSourceName: usersLambdaDataSource.name,
       }
     );
+
+    const resolver_addContacts: appsync.CfnResolver = new appsync.CfnResolver(
+      this,
+      "resolver_addContacts",
+      {
+        apiId: pkdrFinanceUsersApi.attrApiId,
+        typeName: "Mutation",
+        fieldName: "addContacts",
+        dataSourceName: usersLambdaDataSource.name,
+      }
+    );
+
+    resolver_addContacts.node.addDependency(pkdrFinanceUsersApiSchema);
+    resolver_addContacts.node.addDependency(usersLambdaDataSource);
+
     resolver_setUserName.node.addDependency(pkdrFinanceUsersApiSchema);
     resolver_setUserName.node.addDependency(usersLambdaDataSource);
 

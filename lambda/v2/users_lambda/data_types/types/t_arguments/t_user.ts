@@ -9,4 +9,11 @@ type UpdateUser={
   attributeName: string;
   attributeValue: string;
 }
-export { User,UpdateUser};
+
+type SetUserName={
+  id:string,
+  userName:string
+}
+
+export { User,UpdateUser,SetUserName};
+

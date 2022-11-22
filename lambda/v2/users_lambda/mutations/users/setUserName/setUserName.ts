@@ -1,5 +1,5 @@
 import { TABLENAME } from "../../../../constants";
-
+import { SetUserName } from "../../../data_types/types/t_arguments/t_user";
 const AWS = require("aws-sdk");
 const docClient = new AWS.DynamoDB.DocumentClient();
 async function getUserName(name: string): Promise<boolean> {
@@ -22,10 +22,7 @@ async function getUserName(name: string): Promise<boolean> {
   }
   return false;
 }
-type SetUserName={
-    id:string,
-    userName:string
-}
+
 async function setUserName(setname: SetUserName): Promise<string> {
   const id = setname.id;
   const name = setname.userName;

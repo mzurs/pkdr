@@ -28,6 +28,16 @@ input CreateUser {
   id: ID!
   cnic: String!
   PHONE_NUMBER: String!
+  ETH_ADDRESS:String!
+  FULL_NAME: String
+  DOB:String
+  FATHER_OR_HUSBAND_NAME:String
+  CITY: String
+  COUNTRY: String
+  POSTAL_CODE:String
+  ADDRESS:String
+  
+
 }
 input UpdateContactList {
   id: ID!

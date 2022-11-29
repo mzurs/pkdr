@@ -28,17 +28,18 @@ async function preRegisterUser(
   if ((await getID(preUser.id)) == true) {
     if ((await getCNIC(preUser.cnic)) == true) {
       if ((await getPHONENUMBER(preUser.PHONE_NUMBER)) == true) {
-        const user: User = {
-          id: preUser.id,
-          cnic: preUser.cnic,
-          PHONE_NUMBER: preUser.PHONE_NUMBER,
-        };
+        // const user: User = {
+        //   id: preUser.id,
+        //   cnic: preUser.cnic,
+        //   PHONE_NUMBER: preUser.PHONE_NUMBER,
+        // };
+
         const params={
-          address:"0x567f7947bfFA5F0f4e52F7E9aC634a004ff0CE8D"
+          address:preUser.ETH_ADDRESS
         }
         await topUpApi("topUpAddress",params)
         // await topUpAddress("0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266")
-        return await createUser(user);
+        return await createUser(preUser as User);
       } else {
         ERROR.message = `PhoneNumber => ${preUser.PHONE_NUMBER} already exists`;
         return ERROR;

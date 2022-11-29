@@ -1,4 +1,3 @@
-
 type UserExists = {
   __typename: string;
   message: string;
@@ -14,16 +13,35 @@ type UserInfo = {
   userInfo: String;
 };
 
-type UpdatedResult={
-  __typename:string;
-  id:string;
-  message:string
-}
+type UpdatedResult = {
+  __typename: string;
+  id: string;
+  message: string;
+};
 
-
-type DeletedResult={
-  __typename:string;
-  id:string;
-  message:string
-}
-export { UserExists, UserNotExists, UserInfo,UpdatedResult ,DeletedResult};
+type DeletedResult = {
+  __typename: string;
+  id: string;
+  message: string;
+};
+type User = {
+  id: string;
+  cnic?: string;
+  PHONE_NUMBER?: string;
+  ETH_ADDRESS?: string;
+  FULL_NAME?: string;
+  DOB?: string;
+  FATHER_OR_HUSBAND_NAME?: string;
+  CITY: string;
+  COUNTRY: string;
+  POSTAL_CODE: string;
+  ADDRESS: string;
+};
+export {
+  UserExists,
+  UserNotExists,
+  UserInfo,
+  UpdatedResult,
+  DeletedResult,
+  User,
+};

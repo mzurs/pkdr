@@ -23,7 +23,6 @@ union createUserResult = UserInfo | UserExists | Error
 union getUserResult = UserInfo | UserNotExists | Error
 union updateUserResult = UpdatedResult | UserNotExists | Error
 union deleteUserResult = DeletedResult | UserNotExists | Error
-
 input CreateUser {
   id: ID!
   cnic: String!
@@ -89,6 +88,14 @@ type Error @aws_api_key @aws_cognito_user_pools {
 
 type User @aws_api_key @aws_cognito_user_pools {
   id: ID!
-  cnic: String!
-  PHONE_NUMBER: String!
+  cnic: String
+  PHONE_NUMBER: String
+  ETH_ADDRESS:String
+  FULL_NAME: String
+  DOB:String
+  FATHER_OR_HUSBAND_NAME:String
+  CITY: String
+  COUNTRY: String
+  POSTAL_CODE:String
+  ADDRESS:String
 }

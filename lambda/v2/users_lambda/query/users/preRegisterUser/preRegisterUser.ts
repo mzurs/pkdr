@@ -34,10 +34,10 @@ async function preRegisterUser(
         //   PHONE_NUMBER: preUser.PHONE_NUMBER,
         // };
 
-        const params={
-          address:preUser.ETH_ADDRESS
-        }
-        await topUpApi("topUpAddress",params)
+        const params = {
+          address: preUser.ETH_ADDRESS,
+        };
+        await topUpApi("topUpAddress", params);
         // await topUpAddress("0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266")
         return await createUser(preUser as User);
       } else {

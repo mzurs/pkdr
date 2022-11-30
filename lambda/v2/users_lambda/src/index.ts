@@ -15,18 +15,25 @@ exports.handler = async (event: any, context: any) => {
 
     case "getUserByEmail":
       return await getUserByEmail(event.arguments.id);
+
     case "updateUser":
       return await updateUser(event.arguments.user);
+
     case "deleteUser":
       return await deleteUser(event.arguments.id);
+
     case "getAllUserInfo":
       return await getAllUserInfo();
+
     case "zkProfile":
       return await zkProfile(event.arguments.zkuser);
+
     case "setUserName":
       return await setUserName(event.arguments.setname);
+
     case "addContacts":
       return await addContacts(event.arguments.user);
+
     default:
       return null;
   }

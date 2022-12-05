@@ -33,10 +33,9 @@ async function main() {
     "0",
     "0",
     "164345617366728272006170673450623848882",
-    "281430901492732617543158812730993744472",
-    true,
+    "281430901492732617543158812730993744472"
   ]);
-  //   console.log(`Witness-> ${witness} \n Output-> ${output}`);
+    console.log(`Witness-> ${witness} \n Output-> ${output}`);
   const proof = zokratesProvider.generateProof(program, witness, keyPair.pk);
 
   // console.log("Proof", proof);
@@ -48,16 +47,17 @@ const result:boolean = await topUpDeployed.verifyTx(proof.proof, proof.inputs);
       "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc",
       result
     );
-     idResult.wait(5);
-    try {
-      const id = await profiles.getVerifiedUser(
-        "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc"
-      );
-      id.wait(2)
-      console.log("Id", id);
-    } catch (error) {
-      console.error("User not found", error as string);
-    }
+    console.log("idResult",idResult);
+    //  idResult.wait(5);
+    // try {
+    //   const id = await profiles.getVerifiedUser(
+    //     "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc"
+    //   );
+    //   // id.wait(2)
+    //   console.log("Id", id);
+    // } catch (error) {
+    //   console.error("User not found", error as string);
+    // }
   } else {
     console.log("User not Verified");
   }

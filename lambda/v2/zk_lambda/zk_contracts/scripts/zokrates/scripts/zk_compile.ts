@@ -10,32 +10,32 @@ const main = async () => {
   // console.log(zk)
   const artifacts = zokratesProvider.compile(zk);
 
-  fs.writeFileSync(
-    path.join(
-      __dirname,
-      "..",
-      "..",
-      "..",
-      "..",
-      "zkConstant",
-      "generated",
-      "outT.json"
-    ),
-    JSON.stringify(artifacts.program)
-  );
-  fs.writeFileSync(
-    path.join(
-      __dirname,
-      "..",
-      "..",
-      "..",
-      "..",
-      "zkConstant",
-      "generated",
-      "zk_abi.json"
-    ),
-    JSON.stringify(artifacts.abi)
-  );
+  // fs.writeFileSync(
+  //   path.join(
+  //     __dirname,
+  //     "..",
+  //     "..",
+  //     "..",
+  //     "..",
+  //     "zkConstant",
+  //     "generated",
+  //     "outT.json"
+  //   ),
+  //   JSON.stringify(artifacts.program)
+  // );
+  // fs.writeFileSync(
+  //   path.join(
+  //     __dirname,
+  //     "..",
+  //     "..",
+  //     "..",
+  //     "..",
+  //     "zkConstant",
+  //     "generated",
+  //     "zk_abi.json"
+  //   ),
+  //   JSON.stringify(artifacts.abi)
+  // );
   // console.log(artifacts)
 
 

@@ -162,7 +162,7 @@ export class UsersStack extends cdk.Stack {
       ),
       handler: "handler",
       runtime: Runtime.NODEJS_16_X,
-      timeout: cdk.Duration.seconds(30),
+      timeout: cdk.Duration.seconds(60),
     });
 
     const userApiServiceRole: iam.Role = new iam.Role(

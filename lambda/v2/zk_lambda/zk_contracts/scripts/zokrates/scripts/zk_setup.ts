@@ -6,10 +6,10 @@ const main = async () => {
   const keypair = zokratesProvider.setup(
     fs.readFileSync(path.join(__dirname, "..", "generated", "out"))
   );
-  fs.writeFileSync(
-    path.join(__dirname,"..","..","..","..","zkConstant", "generated", "zk_setup.json"),
-    JSON.stringify(keypair)
-  );
+  // fs.writeFileSync(
+  //   path.join(__dirname,"..","..","..","..","zkConstant", "generated", "zk_setup.json"),
+  //   JSON.stringify(keypair)
+  // );
   // console.log(keypair)
   fs.writeFileSync(
     path.join(__dirname,"..","generated", "zk_setup.json"),

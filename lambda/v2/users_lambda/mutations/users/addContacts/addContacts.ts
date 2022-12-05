@@ -2,17 +2,19 @@ const AWS = require("aws-sdk");
 const docClinet = new AWS.DynamoDB.DocumentClient();
 import { TABLENAME } from "../../../../constants";
 import { ICHECKBYEMAIL } from "../../../data_types/interfaces/i_user";
-import { UpdateContactList, UpdateUser } from "../../../data_types/types/t_arguments/t_user";
+import {
+  UpdateContactList,
+  UpdateUser,
+} from "../../../data_types/types/t_arguments/t_user";
 import { Error } from "../../../data_types/types/t_return/t_e_user";
 import {
   UpdatedResult,
   UserNotExists,
 } from "../../../data_types/types/t_return/t_user";
 
-
-async function addContacts(user:UpdateContactList):Promise<UpdatedResult|UserNotExists|Error> {
-    
-
+async function addContacts(
+  user: UpdateContactList
+): Promise<UpdatedResult | UserNotExists | Error> {
   if (user.id != "" || typeof user.id != null || typeof user == "undefined") {
     const emailParams: ICHECKBYEMAIL = {
       TableName: TABLENAME, //process.env.PKDR_FINANCE_USER_TABLE,
@@ -34,15 +36,16 @@ async function addContacts(user:UpdateContactList):Promise<UpdatedResult|UserNot
           var params = {
             TableName: TABLENAME, //process.env.PKDR_FINANCE_USER_TABLE,
             Key: { id: user.id },
-            UpdateExpression : "SET #CONTACTS_ADDED = list_append(#CONTACTS_ADDED, :attributeValue)",
+            UpdateExpression:
+              "SET #CONTACTS_ADDED = list_append(if_not_exists(#CONTACTS_ADDED, :attributeValue), :attributeValue)",
             ExpressionAttributeNames: {
-              "#CONTACTS_ADDED": `CONTACTS_ADDED`,
+              "#CONTACTS_ADDED": "CONTACTS_ADDED",
             },
             ExpressionAttributeValues: {
               ":attributeValue": [`${user.attributeValue}`],
             },
 
-            ReturnValues: "ALL_NEW",
+            // ReturnValues: "ALL_NEW",
           };
 
           await docClinet.update(params).promise();

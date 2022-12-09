@@ -4,9 +4,17 @@
   },
   "arguments": {
     "user": {
-      "id": "aqqqqqq",
-      "cnic":"aqqqqqq",
-      "PHONE_NUMBER":"aqqqqqq" 
+      "id": "aqqqqqqq",
+      "cnic":"aqqqqqqq",
+      "PHONE_NUMBER":"aqqqqqqq" ,
+      "ETH_ADDRESS": "0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc",
+      "FULL_NAME": "string",
+      "DOB": "string",
+      "FATHER_OR_HUSBAND_NAME": "string",
+      "CITY": "string",
+      "COUNTRY": "string",
+      "POSTAL_CODE": "String",
+      "ADDRESS": "string"
     }
   }
 }

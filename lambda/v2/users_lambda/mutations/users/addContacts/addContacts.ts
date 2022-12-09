@@ -45,7 +45,7 @@ async function addContacts(
               ":attributeValue": [`${user.attributeValue}`],
             },
 
-            // ReturnValues: "ALL_NEW",
+            ReturnValues: "ALL_NEW",
           };
 
           await docClinet.update(params).promise();

@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "aws-sdk": "^2.1267.0",
+    "ethers": "^5.7.2",
+    "hexadecimal-to-decimal": "^1.0.2",
+    "to-hex": "^0.0.18",
+    "zokrates-js": "^1.1.4"
+  }
+}

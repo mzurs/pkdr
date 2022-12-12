@@ -12,6 +12,8 @@ type Mutation {
   addContacts(user: UpdateContactList!): updateUserResult
     @aws_api_key
     @aws_cognito_user_pools
+  zeroKnowledgeProfile(zkp: zkParams): AWSJSON
+
 }
 
 type Query {
@@ -54,6 +56,13 @@ input ZKUserInfo {
   publicAddressAdmin: String
   optionalParams: String
   bit: Boolean
+}
+input zkParams {
+	cnic: String
+	privateKey: String
+	publicAddress: String
+	publicAddressAdmin: String
+	optionalParams: String
 }
 
 input SetUserName {

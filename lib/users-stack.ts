@@ -150,6 +150,15 @@ export class UsersStack extends cdk.Stack {
     );
 
     //Lambda Function Declaration
+    //ZK Lambda
+
+    const zkLambda = NodejsFunction.fromFunctionArn(
+      this,
+      "zkLambda",
+      "arn:aws:lambda:us-west-2:662538652517:function:test"
+    );
+
+    //users Lambda
     const usersLambda = new NodejsFunction(this, "usersLambda", {
       entry: join(
         __dirname,
@@ -178,7 +187,19 @@ export class UsersStack extends cdk.Stack {
         actions: ["lambda:InvokeFunction"],
       })
     );
-
+const zkLambdaDataSource = new appsync.CfnDataSource(
+  this,
+  "zkLambdaDataSource",
+  {
+    apiId: pkdrFinanceUsersApi.attrApiId,
+    name: "zkLambdaDataSource",
+    type: "AWS_LAMBDA",
+    lambdaConfig: {
+      lambdaFunctionArn: zkLambda.functionArn,
+    },
+    serviceRoleArn: userApiServiceRole.roleArn,
+  }
+);
     const usersLambdaDataSource = new appsync.CfnDataSource(
       this,
       "usersLambdaDataSource",
@@ -206,7 +227,16 @@ export class UsersStack extends cdk.Stack {
         serviceRoleArn: userApiServiceRole.roleArn,
       }
     );
-
+    const resolver_zeroKnowledgeProfile: appsync.CfnResolver = new appsync.CfnResolver(
+      this,
+      "resolver_zeroKnowledgeProfile",
+      {
+        apiId: pkdrFinanceUsersApi.attrApiId,
+        typeName: "Mutation",
+        fieldName: "zeroKnowledgeProfile",
+        dataSourceName: zkLambdaDataSource.name,
+      }
+    );
     const resolver_createUser: appsync.CfnResolver = new appsync.CfnResolver(
       this,
       "resolver_createUser",
@@ -289,6 +319,9 @@ export class UsersStack extends cdk.Stack {
 
     resolver_getUserById.node.addDependency(pkdrFinanceUsersApiSchema);
     resolver_getUserById.node.addDependency(usersLambdaDataSource);
+
+    resolver_zeroKnowledgeProfile.node.addDependency(pkdrFinanceUsersApiSchema);
+    resolver_zeroKnowledgeProfile.node.addDependency(zkLambdaDataSource);
 
     const resolver_deleteUser: appsync.CfnResolver = new appsync.CfnResolver(
       this,

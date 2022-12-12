@@ -10,3 +10,6 @@ out
 
 zk_setup.json
 zk_abi.json
+
+deploy.zip
+lambda/v2/zkp_lambda/deploy.zip

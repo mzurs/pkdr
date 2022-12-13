@@ -5,13 +5,14 @@ import {
   _JSON_RPC_PROVIDER_MUMBAI,
   _PKDR_PRIVATE_KEY,
 } from "./constants/constants";
+import getRateUSDPKR from "./getRateUSDPKR";
 
 async function topUpAddress(address: string): Promise<string | number> {
-  const PKRUSD = 220;
+  const PKRUSD = await getRateUSDPKR(); //220;
 
-  const MATICUSD = 0.8;
+  const MATICUSD = await getRateMaticToUsd(); //0.8;
 
-  const TOPUPAMOUNT = 10 / (MATICUSD * PKRUSD);
+  const TOPUPAMOUNT = (10 / (MATICUSD * PKRUSD));
 
   const PKDR_PRIVATE_KEY = _PKDR_PRIVATE_KEY;
 
@@ -25,7 +26,7 @@ async function topUpAddress(address: string): Promise<string | number> {
 
   const connectedWallet = contract.connect(wallet);
 
-  const tx = await connectedWallet.topUpAddress(address, "100000000000000", {
+  const tx = await connectedWallet.topUpAddress(address, ethers.utils.parseEther(String(TOPUPAMOUNT)), {
     gasLimit: 500000,
   });
 

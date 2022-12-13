@@ -1,4 +1,5 @@
 import { ethers, getNamedAccounts, deployments } from "hardhat";
+import getRateUSDPKR from "./getRateUSDPKR";
 
 async function main() {
   const { deployer } = await getNamedAccounts();
@@ -6,6 +7,7 @@ async function main() {
 
   const topUpDeployed = await ethers.getContract("topUp", deployer);
   
+  console.log(`PKRUSD: ${await getRateUSDPKR() }`)
 
   let getRate = await topUpDeployed.getRate();
   getRate = (getRate * 10000000000) / 1000000000000000000;

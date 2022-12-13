@@ -6,7 +6,7 @@ import {
 } from "./constants/constants";
 
 
-async function getRateMaticToUsd(): Promise<string | undefined> {
+async function getRateMaticToUsd(): Promise<number> {
 
   const PKDR_PRIVATE_KEY =
    _PKDR_PRIVATE_KEY
@@ -17,8 +17,9 @@ async function getRateMaticToUsd(): Promise<string | undefined> {
   );
 
   const contract = new ethers.Contract(contractAddress, contractABI, provider);
-
-  return await contract.getRate();
+  let getRate = parseFloat((await contract.getRate()).toString());
+  getRate = ((getRate * 10000000000) / 1000000000000000000);
+  return getRate;
 }
 
 export default getRateMaticToUsd;

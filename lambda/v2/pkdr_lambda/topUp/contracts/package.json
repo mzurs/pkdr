@@ -32,5 +32,8 @@
   "scripts": {
     "node": " hardhat node",
     "compile": "yarn hardhat compile"
+  },
+  "dependencies": {
+    "request": "^2.88.2"
   }
 }

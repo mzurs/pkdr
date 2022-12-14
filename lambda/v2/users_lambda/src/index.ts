@@ -7,6 +7,7 @@ import getAllUserInfo from "../query/admin/getAllUserInfo/getAllUserInfo";
 import zkProfile from "../mutations/users/createProfile/createProfile";
 import setUserName from "../mutations/users/setUserName/setUserName";
 import addContacts from "../mutations/users/addContacts/addContacts";
+import getAddressByUserName from "../query/users/getAddressByUserName/getAddressByUserName";
 
 exports.handler = async (event: any, context: any) => {
   switch (event.info.fieldName) {
@@ -33,6 +34,9 @@ exports.handler = async (event: any, context: any) => {
 
     case "addContacts":
       return await addContacts(event.arguments.user);
+
+    case "getAddressByUserName":
+      return await getAddressByUserName(event.arguments.userName)
 
     default:
       return null;

@@ -79,6 +79,21 @@ export class UsersStack extends cdk.Stack {
       projectionType: ProjectionType.KEYS_ONLY, //copied all data from table to GSI
     });
 
+    usersDatabaseDynamoDB.addGlobalSecondaryIndex({
+      indexName: "getAddressByUserNameIndex",
+      partitionKey: {
+        name: "USERNAME",
+        type: AttributeType.STRING,
+      },
+      // sortKey: {
+      //   name: "sk",
+      //   type: AttributeType.STRING,
+      // },
+      // readCapacity: 1,
+      // writeCapacity: 1,
+      projectionType: ProjectionType.INCLUDE, //copied all data from table to GSI
+      nonKeyAttributes:["ETH_ADDRESS"]
+    });
     // // usersDatabaseDynamoDB.addGlobalSecondaryIndex({
     // //   indexName: "phoneNumberIndex",
     // //   partitionKey: {
@@ -187,19 +202,19 @@ export class UsersStack extends cdk.Stack {
         actions: ["lambda:InvokeFunction"],
       })
     );
-const zkLambdaDataSource = new appsync.CfnDataSource(
-  this,
-  "zkLambdaDataSource",
-  {
-    apiId: pkdrFinanceUsersApi.attrApiId,
-    name: "zkLambdaDataSource",
-    type: "AWS_LAMBDA",
-    lambdaConfig: {
-      lambdaFunctionArn: zkLambda.functionArn,
-    },
-    serviceRoleArn: userApiServiceRole.roleArn,
-  }
-);
+    const zkLambdaDataSource = new appsync.CfnDataSource(
+      this,
+      "zkLambdaDataSource",
+      {
+        apiId: pkdrFinanceUsersApi.attrApiId,
+        name: "zkLambdaDataSource",
+        type: "AWS_LAMBDA",
+        lambdaConfig: {
+          lambdaFunctionArn: zkLambda.functionArn,
+        },
+        serviceRoleArn: userApiServiceRole.roleArn,
+      }
+    );
     const usersLambdaDataSource = new appsync.CfnDataSource(
       this,
       "usersLambdaDataSource",
@@ -227,16 +242,13 @@ const zkLambdaDataSource = new appsync.CfnDataSource(
         serviceRoleArn: userApiServiceRole.roleArn,
       }
     );
-    const resolver_zeroKnowledgeProfile: appsync.CfnResolver = new appsync.CfnResolver(
-      this,
-      "resolver_zeroKnowledgeProfile",
-      {
+    const resolver_zeroKnowledgeProfile: appsync.CfnResolver =
+      new appsync.CfnResolver(this, "resolver_zeroKnowledgeProfile", {
         apiId: pkdrFinanceUsersApi.attrApiId,
         typeName: "Mutation",
         fieldName: "zeroKnowledgeProfile",
         dataSourceName: zkLambdaDataSource.name,
-      }
-    );
+      });
     const resolver_createUser: appsync.CfnResolver = new appsync.CfnResolver(
       this,
       "resolver_createUser",
@@ -301,6 +313,17 @@ const zkLambdaDataSource = new appsync.CfnDataSource(
         dataSourceName: usersLambdaDataSource.name,
       }
     );
+
+    const resolver_getAddressByUserName: appsync.CfnResolver =
+      new appsync.CfnResolver(this, "resolver_getAddressByUserName", {
+        apiId: pkdrFinanceUsersApi.attrApiId,
+        typeName: "Query",
+        fieldName: "getAddressByUserName",
+        dataSourceName: usersLambdaDataSource.name,
+      });
+
+    resolver_getAddressByUserName.node.addDependency(pkdrFinanceUsersApiSchema);
+    resolver_getAddressByUserName.node.addDependency(usersLambdaDataSource);
 
     resolver_addContacts.node.addDependency(pkdrFinanceUsersApiSchema);
     resolver_addContacts.node.addDependency(usersLambdaDataSource);

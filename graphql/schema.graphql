@@ -13,32 +13,33 @@ type Mutation {
     @aws_api_key
     @aws_cognito_user_pools
   zeroKnowledgeProfile(zkp: zkParams): AWSJSON
-
 }
 
 type Query {
   getUserByEmail(id: ID!): getUserResult @aws_api_key @aws_cognito_user_pools
   getAllUserInfo: [User] @aws_api_key @aws_cognito_user_pools
+  getAddressByUserName(userName: String): getAddressByUserNameResult
+
 }
 
 union createUserResult = UserInfo | UserExists | Error
 union getUserResult = UserInfo | UserNotExists | Error
 union updateUserResult = UpdatedResult | UserNotExists | Error
 union deleteUserResult = DeletedResult | UserNotExists | Error
+union getAddressByUserNameResult = String | UserNotExists| Error
+
 input CreateUser {
   id: ID!
   cnic: String!
   PHONE_NUMBER: String!
-  ETH_ADDRESS:String!
+  ETH_ADDRESS: String!
   FULL_NAME: String
-  DOB:String
-  FATHER_OR_HUSBAND_NAME:String
+  DOB: String
+  FATHER_OR_HUSBAND_NAME: String
   CITY: String
   COUNTRY: String
-  POSTAL_CODE:String
-  ADDRESS:String
-  
-
+  POSTAL_CODE: String
+  ADDRESS: String
 }
 input UpdateContactList {
   id: ID!
@@ -58,11 +59,11 @@ input ZKUserInfo {
   bit: Boolean
 }
 input zkParams {
-	cnic: String
-	privateKey: String
-	publicAddress: String
-	publicAddressAdmin: String
-	optionalParams: String
+  cnic: String
+  privateKey: String
+  publicAddress: String
+  publicAddressAdmin: String
+  optionalParams: String
 }
 
 input SetUserName {
@@ -99,12 +100,12 @@ type User @aws_api_key @aws_cognito_user_pools {
   id: ID!
   cnic: String
   PHONE_NUMBER: String
-  ETH_ADDRESS:String
+  ETH_ADDRESS: String
   FULL_NAME: String
-  DOB:String
-  FATHER_OR_HUSBAND_NAME:String
+  DOB: String
+  FATHER_OR_HUSBAND_NAME: String
   CITY: String
   COUNTRY: String
-  POSTAL_CODE:String
-  ADDRESS:String
+  POSTAL_CODE: String
+  ADDRESS: String
 }

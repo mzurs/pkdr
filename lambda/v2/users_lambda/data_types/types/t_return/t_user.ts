@@ -37,6 +37,11 @@ type User = {
   POSTAL_CODE: string;
   ADDRESS: string;
 };
+
+type AddressInfo = {
+  __typename: string;
+  address: string;
+};
 export {
   UserExists,
   UserNotExists,
@@ -44,4 +49,5 @@ export {
   UpdatedResult,
   DeletedResult,
   User,
+  AddressInfo
 };

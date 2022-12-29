@@ -2,7 +2,7 @@ const AWS = require("aws-sdk");
 const docClinet = new AWS.DynamoDB.DocumentClient();
 import { type } from "os";
 import { User } from "../../../data_types/types/t_arguments/t_user";
-import { UserNotExists, UserInfo } from "../../../data_types/types/t_return/t_user";
+import { UserNotExists, UserInfo,AddressInfo } from "../../../data_types/types/t_return/t_user";
 import { Error } from "../../../data_types/types/t_return/t_e_user";
 import { TABLENAME } from "../../../../constants";
 const docClient = new AWS.DynamoDB.DocumentClient();
@@ -32,7 +32,7 @@ async function getUserNameAddress(USERNAME: string): Promise<string |boolean> {
 
 async function getAddressByUserName(
   userName: string
-): Promise<string | UserNotExists | Error> {
+): Promise<AddressInfo | UserNotExists | Error> {
   const params = {
     TableName: TABLENAME,//process.env.PKDR_FINANCE_USER_TABLE,
     Key: {
@@ -52,7 +52,11 @@ async function getAddressByUserName(
 
 const address:string |boolean= await getUserNameAddress(userName);
 if(typeof(address)=="string"){
-  return address
+const AddressInfo:AddressInfo={
+  __typename:"AddressInfo",
+  address:`${address}`
+}
+  return AddressInfo;
 }else{
   const ERROR: Error = {
     __typename: "Error",

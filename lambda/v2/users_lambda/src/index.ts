@@ -36,7 +36,7 @@ exports.handler = async (event: any, context: any) => {
       return await addContacts(event.arguments.user);
 
     case "getAddressByUserName":
-      return await getAddressByUserName(event.arguments.userName)
+      return await getAddressByUserName(event.arguments.userName);
 
     default:
       return null;

@@ -26,7 +26,7 @@ union createUserResult = UserInfo | UserExists | Error
 union getUserResult = UserInfo | UserNotExists | Error
 union updateUserResult = UpdatedResult | UserNotExists | Error
 union deleteUserResult = DeletedResult | UserNotExists | Error
-union getAddressByUserNameResult = String | UserNotExists| Error
+union getAddressByUserNameResult =AddressInfo| UserNotExists| Error
 
 input CreateUser {
   id: ID!
@@ -64,6 +64,10 @@ input zkParams {
   publicAddress: String
   publicAddressAdmin: String
   optionalParams: String
+}
+
+type AddressInfo{
+  address:String
 }
 
 input SetUserName {

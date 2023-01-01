@@ -124,28 +124,30 @@ export class UsersStack extends cdk.Stack {
       runtime: Runtime.NODEJS_16_X,
     });
     //AppSync GraphQL API --additional Authentication Provider
-    const additionalAuthenticationProviderProperty: appsync.CfnGraphQLApi.AdditionalAuthenticationProviderProperty =
-      {
-        authenticationType: "AWS_LAMBDA",
-        lambdaAuthorizerConfig: {
-          authorizerResultTtlInSeconds: 120,
-          authorizerUri: authLambda.functionArn,
-          // identityValidationExpression: 'identityValidationExpression',
-        },
-        userPoolConfig: {
-          appIdClientRegex: "3tihr2r882rhmgvfmkdh56vdqe", //app client ID
-          awsRegion: "us-west-2",
-          userPoolId: "us-west-2_cPjOesJgg",
-        },
-      };
+    // const additionalAuthenticationProviderProperty: appsync.CfnGraphQLApi.AdditionalAuthenticationProviderProperty =
+    //   {
+    //     authenticationType: "AWS_LAMBDA",
+    //     lambdaAuthorizerConfig: {
+    //       authorizerResultTtlInSeconds: 120,
+    //       authorizerUri: authLambda.functionArn,
+    //       // identityValidationExpression: 'identityValidationExpression',
+    //     },
+    //     userPoolConfig: {
+    //       appIdClientRegex: "3tihr2r882rhmgvfmkdh56vdqe", //app client ID
+    //       awsRegion: "us-west-2",
+    //       userPoolId: "us-west-2_cPjOesJgg",
+    //     },
+    //   };
 
     //AppSync GraphQL API
     const pkdrFinanceUsersApi = new CfnGraphQLApi(this, "pkdrFinanceUsersApi", {
       name: "pkdrFinanceUsersApi",
-      authenticationType: "API_KEY",
-      additionalAuthenticationProviders: [
-        additionalAuthenticationProviderProperty,
-      ],
+      authenticationType: "AWS_LAMBDA",
+      lambdaAuthorizerConfig: {
+        authorizerResultTtlInSeconds: 120,
+        authorizerUri: authLambda.functionArn,
+        // identityValidationExpression: 'identityValidationExpression',
+      },
     });
 
     //definition of graphql schema

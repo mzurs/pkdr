@@ -144,7 +144,7 @@ export class UsersStack extends cdk.Stack {
       name: "pkdrFinanceUsersApi",
       authenticationType: "AWS_LAMBDA",
       lambdaAuthorizerConfig: {
-        authorizerResultTtlInSeconds: 120,
+        authorizerResultTtlInSeconds: 0,
         authorizerUri: authLambda.functionArn,
         // identityValidationExpression: 'identityValidationExpression',
       },

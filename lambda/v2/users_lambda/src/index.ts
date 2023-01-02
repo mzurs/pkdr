@@ -15,8 +15,8 @@ exports.handler = async (event: any, context: any) => {
       return await preRegisterUser(event.arguments.user);
 
     case "getUserByEmail":
-      return "zohaib10092001@gmail.com"
-      // return await getUserByEmail(event.arguments.id);
+      // return "zohaib10092001@gmail.com"
+      return await getUserByEmail(event.arguments.id);
 
     case "updateUser":
       return await updateUser(event.arguments.user);

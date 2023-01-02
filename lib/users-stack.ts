@@ -92,7 +92,7 @@ export class UsersStack extends cdk.Stack {
       // readCapacity: 1,
       // writeCapacity: 1,
       projectionType: ProjectionType.INCLUDE, //copied all data from table to GSI
-      nonKeyAttributes:["ETH_ADDRESS"]
+      nonKeyAttributes: ["ETH_ADDRESS"],
     });
     // // usersDatabaseDynamoDB.addGlobalSecondaryIndex({
     // //   indexName: "phoneNumberIndex",
@@ -154,7 +154,7 @@ export class UsersStack extends cdk.Stack {
     const definition = readFileSync(
       resolve(__dirname, "../graphql/schema.graphql")
     ).toString();
-    console.log("***************", definition);
+    console.log("**************", definition);
 
     //graphql schema appsync
     const pkdrFinanceUsersApiSchema = new appsync.CfnGraphQLSchema(

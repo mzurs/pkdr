@@ -57,29 +57,28 @@
 // };
 
 import { Event } from "../data_types/types/t_arguments/t_arguments";
-exports.handler = async function (event:Event) {
+exports.handler = async function (event: Event) {
   console.log(event);
-  let token = event.authorizationToken;
-  let effect = "Deny";
-  if (token == "abc321") {
-   const res={
-  "isAuthorized":true
-  // "resolverContext": {
-  //   "banana":"very yellow",
-  //   "apple":"very green" 
-  // }
-   }
-  return res;
-}
-   else {
-      const res={
-  "isAuthorized":false
-  // "resolverContext": {
-  //   "banana":"very yellow",
-  //   "apple":"very green" 
-  //
+  const functionsArray: string[] = ["getUserByEmail", "getUserByName"];
+  const adminFunctionsList = ["deleteUser"];
+  const token = event.authorizationToken;
+  const queryName: string = event.requestContext.queryString;
+  console.log(`Query Name: ${queryName}`);
+
+  const functionName: string = String(
+    functionsArray.find((s) => queryName.includes(s))
+  );
+
+  if (token == "abc") {
+    const res = {
+      isAuthorized: true,
+    };
+    return res;
+  } else {
+    const res = {
+      isAuthorized: false,
+    };
+
+    return res;
   }
-  
-  
-  return res;
-}}
+};

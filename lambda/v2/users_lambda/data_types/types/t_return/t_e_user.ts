@@ -1,6 +1,6 @@
 type Error={
     __typename:string;
-    "message":string
+    "errorMessage":string
 }
 Error
 export {Error}

@@ -20,7 +20,7 @@ async function preRegisterUser(
 ): Promise<Error | UserInfo | UserExists> {
   const ERROR: Error = {
     __typename: "Error",
-    message: "",
+    errorMessage: "",
   };
 
   // const rate = await topUpApi("getRateMaticToUsd");
@@ -41,15 +41,15 @@ async function preRegisterUser(
         // await topUpAddress("0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266")
         return await createUser(preUser as User);
       } else {
-        ERROR.message = `PhoneNumber => ${preUser.PHONE_NUMBER} already exists`;
+        ERROR.errorMessage = `PhoneNumber => ${preUser.PHONE_NUMBER} already exists`;
         return ERROR;
       }
     } else {
-      ERROR.message = `CNIC => ${preUser.cnic} already exists`;
+      ERROR.errorMessage = `CNIC => ${preUser.cnic} already exists`;
       return ERROR;
     }
   } else {
-    ERROR.message = `Id => ${preUser.id} already exists`;
+    ERROR.errorMessage = `Id => ${preUser.id} already exists`;
     return ERROR;
   }
   return ERROR;

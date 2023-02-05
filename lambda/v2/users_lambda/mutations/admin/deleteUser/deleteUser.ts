@@ -37,7 +37,7 @@ async function deleteUser(
       } catch (error) {
         const deleteErrorMessage: Error = {
           __typename: "Error",
-          message: `Error while deleting userId: ${id}`,
+          errorMessage: `Error while deleting userId: ${id}`,
         };
         return deleteErrorMessage;
       }
@@ -45,7 +45,7 @@ async function deleteUser(
   } else {
     const argsError: Error = {
       __typename: "Error",
-      message: "Arguments are invalid",
+      errorMessage: "Arguments are invalid",
     };
     return argsError;
   }

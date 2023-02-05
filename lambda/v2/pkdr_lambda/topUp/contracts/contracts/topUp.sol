@@ -59,21 +59,19 @@ contract topUp {
         (
             ,
             /*uint80 roundID*/
-            int price, /*uint startedAt*/
+            int price /*uint startedAt*/ /*uint timeStamp*/,
             ,
             ,
 
-        ) = /*uint timeStamp*/
-            /*uint80 answeredInRound*/
+        ) = /*uint80 answeredInRound*/
             s_priceFeed.latestRoundData();
         return uint256(price);
     }
 
-  function topUpAddress(address payable _to, uint256 amount)
-        public
-        onlyPkdrOrg
-        returns (uint256)
-    {
+    function topUpAddress(
+        address payable _to,
+        uint256 amount
+    ) public onlyPkdrOrg returns (uint256) {
         // uint256 amountToDeposit = TOPUP_AMOUNT_IN_PKR /
         //     (getRate() * conversionRateUsdToPkr);
 
@@ -86,11 +84,8 @@ contract topUp {
         return amount;
     }
 
-
     function topUpContract() public payable onlyPkdrOrg {
-
         emit amountDeposited(msg.sender, msg.value);
-
     }
 
     //6. internal
@@ -100,14 +95,10 @@ contract topUp {
     // 8. View and pure functions
 
     function getPkdrAddress() public view onlyPkdrOrg returns (address) {
-
         return i_pkdrOrgAddress;
-    
     }
 
     function getContractBalance() public view onlyPkdrOrg returns (uint256) {
-
         return address(this).balance;
-    
     }
 }

@@ -41,9 +41,9 @@ const createProfile = async (params: UserObject): Promise<string> => {
         ? "Profile Created On-Chain"
         : "Error while creating Profile";
     } catch (error) {
-      return error as unknown as string;
+       return error as unknown as string;
     }
-  }
+  } 
   else{
   return `User with ID ${params.publicAddress} already exists`;
   }

@@ -58,7 +58,7 @@ async function addContacts(
         } else {
           const idError: Error = {
             __typename: "Error",
-            message: `User with ${user.id} not found`,
+            errorMessage: `User with ${user.id} not found`,
           };
           return idError;
         }
@@ -66,27 +66,27 @@ async function addContacts(
         console.log("****", error);
         const ERROR: Error = {
           __typename: "Error",
-          message: error as string,
+          errorMessage: error as string,
         };
         return ERROR;
       }
     } else {
       const argsError: Error = {
         __typename: "Error",
-        message: "Arguments are invalid",
+        errorMessage: "Arguments are invalid",
       };
       return argsError;
     }
 
     const ERROR: Error = {
       __typename: "Error",
-      message: "Error while updating user",
+      errorMessage: "Error while updating user",
     };
     return ERROR;
   } else {
     const argsError: Error = {
       __typename: "Error",
-      message: "Arguments are invalid",
+      errorMessage: "Arguments are invalid",
     };
     return argsError;
   }

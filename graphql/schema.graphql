@@ -92,7 +92,7 @@ type UserInfo @aws_lambda {
 }
 
 type Error @aws_lambda {
-  message: String
+  errorMessage: String
 }
 
 type User @aws_lambda {

@@ -45,14 +45,14 @@ const config: HardhatUserConfig = {
   defaultNetwork: "hardhat",
   networks: {
     hardhat: {},
-    // localhost: {
-    //   chainId: 31337,
-    // },
-    // mumbai: {
-    //   url: MUMBAI_RPC_URL,
-    //   accounts: [MUMBAI_PRIVATE_KEY],
-    //   // chainId: 80001,
-    // },
+    localhost: {
+      chainId: 31337,
+    },
+    polygon_mumbai: {
+      url: MUMBAI_RPC_URL,
+      accounts: [MUMBAI_PRIVATE_KEY],
+      // chainId: 80001,
+    }
   },
   solidity: {
     compilers: [

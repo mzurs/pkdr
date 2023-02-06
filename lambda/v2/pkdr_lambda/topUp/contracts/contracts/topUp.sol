@@ -59,12 +59,11 @@ contract topUp {
         (
             ,
             /*uint80 roundID*/
-            int price /*uint startedAt*/ /*uint timeStamp*/,
+            int price /*uint startedAt*/ /*uint timeStamp*/ /*uint80 answeredInRound*/,
             ,
             ,
 
-        ) = /*uint80 answeredInRound*/
-            s_priceFeed.latestRoundData();
+        ) = s_priceFeed.latestRoundData();
         return uint256(price);
     }
 

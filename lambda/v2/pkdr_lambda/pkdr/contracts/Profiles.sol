@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-
+pragma solidity ^0.8.7;
 
 
 //states variables
@@ -24,5 +24,15 @@
 contract Profiles {
 
 
+struct users{
+    bool verificationStatus;
+
+}
+mapping (address => users) name;
+
+
+constructor(){
+
+}
 
 }

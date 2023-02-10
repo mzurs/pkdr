@@ -24,4 +24,4 @@ async function deployProfile(hre: HardhatRuntimeEnvironment) {
 
 export default deployProfile;
 
-deployProfile.tags = ["Profiles"];
+deployProfile.tags = ["Profiles","all"];

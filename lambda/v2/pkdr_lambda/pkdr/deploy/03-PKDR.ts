@@ -40,8 +40,8 @@ async function deployProfile(hre: HardhatRuntimeEnvironment) {
 //     contract: 'Profiles',
 // })
 const profilesDeploy=
-await deploy('Profiles', {
-  contract: 'Profiles',
+await deploy('PKDR', {
+  contract: 'PKDR',
   from: deployer,
   args: [],
   proxy: {

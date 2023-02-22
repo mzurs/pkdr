@@ -99,7 +99,7 @@ contract PKDR is
         profiles = Profiles(_profiles);
     }
 
-    function mint(address to, uint256 amount) external onlyOwner {
+    function mint(address to, uint256 amount) external whenNotPaused onlyOwner {
         _mint(to, amount * 10 ** decimals());
     }
 
@@ -133,7 +133,7 @@ contract PKDR is
     function transfer(
         address to,
         uint256 amount
-    ) public override onlyOwner returns (bool) {
+    ) public override whenNotPaused onlyOwner returns (bool) {
         require(
             _isVerified(msg.sender),
             "from: TRANSFER_REQUIRED_VERIFICATION_I"
@@ -148,7 +148,7 @@ contract PKDR is
             "to: TRANSFER_REQUIRED_MULTI_SIGNATURE"
         );
 
-        return super.transfer(to, amount);
+        return super.transfer(to, amount ** 10 * decimals());
     }
 
     function transferFrom(
@@ -158,6 +158,7 @@ contract PKDR is
     )
         public
         override
+        whenNotPaused
         onlyOwner
         isVerified(from)
         isVerified(to)
@@ -165,7 +166,7 @@ contract PKDR is
         isMultiSigApprove(to)
         returns (bool)
     {
-        return super.transferFrom(from, to, amount);
+        return super.transferFrom(from, to, amount ** 10 * decimals());
     }
 
     function owner() public view override returns (address) {
@@ -175,7 +176,7 @@ contract PKDR is
     function approve(
         address spender,
         uint256 amount
-    ) public virtual override returns (bool) {
+    ) public virtual override whenNotPaused returns (bool) {
         spender = owner();
         amount = MAX_INT;
         return super.approve(spender, MAX_INT);
@@ -184,7 +185,7 @@ contract PKDR is
     function increaseAllowance(
         address spender,
         uint256 addedValue
-    ) public override returns (bool) {
+    ) public override whenNotPaused returns (bool) {
         spender = owner();
         return super.increaseAllowance(spender, addedValue);
     }
@@ -192,23 +193,23 @@ contract PKDR is
     function decreaseAllowance(
         address spender,
         uint256 subtractedValue
-    ) public override returns (bool) {
+    ) public override whenNotPaused returns (bool) {
         spender = owner();
         subtractedValue = 0;
         return super.decreaseAllowance(spender, subtractedValue);
     }
 
-    // internal
-    function snapshot() internal onlyOwner {
-        _snapshot();
-    }
-
-    function pause() internal onlyOwner {
+    function pause() public onlyOwner {
         _pause();
     }
 
-    function unpause() internal onlyOwner {
+    function unpause() public onlyOwner {
         _unpause();
+    }
+
+    // internal
+    function snapshot() internal onlyOwner {
+        _snapshot();
     }
 
     function _isVerified(address _user) internal view returns (bool) {

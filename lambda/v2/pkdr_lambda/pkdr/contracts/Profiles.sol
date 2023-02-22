@@ -5,7 +5,7 @@ pragma solidity ^0.8.7;
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
-
+// import "@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol";
 import "./interfaces/IProfiles.sol";
 
 // import "./IProfiles.sol";
@@ -125,34 +125,26 @@ contract Profiles is
     }
 
     // retain verification of a user
-    function retainVerification(address _user)
-        external
-        onlyOwner
-        userNotExists(_user)
-        isStatusNotRevoked(_user)
-    {
+    function retainVerification(
+        address _user
+    ) external onlyOwner userNotExists(_user) isStatusNotRevoked(_user) {
         users[_user].isStatusRevoked = false;
 
         emit PROFILE_RETAINED(_user);
     }
 
     // revoke the verification status of a user
-    function revokeVerifiedUser(address _user)
-        external
-        onlyOwner
-        userNotExists(_user)
-        isStatusRevoked(_user)
-    {
+    function revokeVerifiedUser(
+        address _user
+    ) external onlyOwner userNotExists(_user) isStatusRevoked(_user) {
         users[_user].isStatusRevoked = true;
 
         emit PROFILE_REVOKED(_user);
     }
 
-    function retainMultiSignature(address _user)
-        external
-        onlyOwner
-        userNotExists(_user)
-    {
+    function retainMultiSignature(
+        address _user
+    ) external onlyOwner userNotExists(_user) {
         require(
             users[_user].multiSig == _revokeMultiSig,
             "MULTI_SIGNATURE ALREADY RETAINED "
@@ -160,11 +152,9 @@ contract Profiles is
         users[_user].multiSig = _multiSig;
     }
 
-    function revokeMultiSignature(address _user)
-        external
-        onlyOwner
-        userNotExists(_user)
-    {
+    function revokeMultiSignature(
+        address _user
+    ) external onlyOwner userNotExists(_user) {
         require(
             users[_user].multiSig == _multiSig,
             "MULTI_SIGNATURE ALREADY REVOKED "
@@ -173,11 +163,9 @@ contract Profiles is
         emit MULTISIG_REVOKED(_user);
     }
 
-    function revokeZkVerification(address _user)
-        external
-        onlyOwner
-        userNotExists(_user)
-    {
+    function revokeZkVerification(
+        address _user
+    ) external onlyOwner userNotExists(_user) {
         require(
             users[_user].verificationStatus_II,
             "ZK_VERIFICATION ALREADY REVOKED "
@@ -186,11 +174,9 @@ contract Profiles is
         emit ZK_VERIFICATION_REVOKED(_user);
     }
 
-    function retainZkVerification(address _user)
-        external
-        onlyOwner
-        userNotExists(_user)
-    {
+    function retainZkVerification(
+        address _user
+    ) external onlyOwner userNotExists(_user) {
         require(
             !users[_user].verificationStatus_II,
             "ZK_VERIFICATION ALREADY RETAINED"
@@ -208,11 +194,9 @@ contract Profiles is
 
     // internal
 
-    function _authorizeUpgrade(address newImplementation)
-        internal
-        override
-        onlyOwner
-    {}
+    function _authorizeUpgrade(
+        address newImplementation
+    ) internal override onlyOwner {}
 
     // private
     function _getContractValue() private view returns (uint256) {
@@ -225,12 +209,9 @@ contract Profiles is
         return owner();
     }
 
-    function getUser(address _user)
-        external
-        view
-        userNotExists(_user)
-        returns (User memory)
-    {
+    function getUser(
+        address _user
+    ) external view userNotExists(_user) returns (User memory) {
         return users[_user];
     }
 
@@ -240,12 +221,9 @@ contract Profiles is
     }
 
     //retuns only the verification status for a user Address not other data present in struct
-    function getVerifiedUser(address _user)
-        external
-        view
-        userNotExists(_user)
-        returns (bool)
-    {
+    function getVerifiedUser(
+        address _user
+    ) external view userNotExists(_user) returns (bool) {
         if (users[_user].isStatusRevoked) {
             return false;
         } else {
@@ -253,12 +231,9 @@ contract Profiles is
         }
     }
 
-    function getMultiSig(address _user)
-        external
-        view
-        userNotExists(_user)
-        returns (bytes32)
-    {
+    function getMultiSig(
+        address _user
+    ) external view userNotExists(_user) returns (bytes32) {
         return users[_user].multiSig;
     }
 }

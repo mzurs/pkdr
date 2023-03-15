@@ -46,6 +46,8 @@ contract PKDR is
 
     uint256 constant MAX_INT = 2 ** 256 - 1;
 
+    uint256 private PLATFORM_FEE = 1 ether;
+
     Profiles profiles;
 
     //error
@@ -99,8 +101,12 @@ contract PKDR is
         profiles = Profiles(_profiles);
     }
 
+    function setPlatFormFee(uint _fee) external onlyOwner {
+        PLATFORM_FEE = _fee;
+    }
+
     function mint(address to, uint256 amount) external whenNotPaused onlyOwner {
-        _mint(to, amount * 10 ** decimals());
+        _mint(to, amount);
     }
 
     function burn(uint256 amount) public override onlyOwner {
@@ -147,8 +153,8 @@ contract PKDR is
             _getMultiSig(to) == _multiSig,
             "to: TRANSFER_REQUIRED_MULTI_SIGNATURE"
         );
-
-        return super.transfer(to, amount ** 10 * decimals());
+        super.transfer(owner(), PLATFORM_FEE);
+        return super.transfer(to, (amount - PLATFORM_FEE));
     }
 
     function transferFrom(
@@ -166,7 +172,12 @@ contract PKDR is
         isMultiSigApprove(to)
         returns (bool)
     {
-        return super.transferFrom(from, to, amount ** 10 * decimals());
+        require(
+            amount >=2 ether,
+            "INSUFFICIENT_AMOUNT TO TRANSFER_REQUIRED_AMOUNT"
+        );
+        super.transferFrom(from, owner(), PLATFORM_FEE);
+        return super.transferFrom(from, to, (amount - PLATFORM_FEE));
     }
 
     function owner() public view override returns (address) {
@@ -243,6 +254,10 @@ contract PKDR is
 
     function getProfileAddress() external view onlyOwner returns (address) {
         return address(profiles);
+    }
+
+    function getPlatFormFee() external view onlyOwner returns (uint256) {
+        return PLATFORM_FEE;
     }
 
     function allowance(

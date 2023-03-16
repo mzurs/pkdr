@@ -7,14 +7,18 @@ type Mutation {
   zkProfile(zkuser: ZKUserInfo): String @aws_lambda
   setUserName(setname: SetUserName): String @aws_lambda
   addContacts(user: UpdateContactList!): updateUserResult @aws_lambda
-
   zeroKnowledgeProfile(zkp: zkParams): AWSJSON
+
+
+  setProfileAddress:Boolean;
+  mintPKDR(mint:mintInfo):mintResult @aws_lambda
 }
 
 type Query {
   getUserByEmail(id: ID!): getUserResult @aws_lambda
   getAllUserInfo: [User] @aws_lambda
   getAddressByUserName(userName: String): getAddressByUserNameResult @aws_lambda
+  getProfileAddress:String @aws_lambda
 }
 
 union createUserResult = UserInfo | UserExists | Error
@@ -61,10 +65,19 @@ input zkParams {
   optionalParams: String
 }
 
+input mintInfo {
+  address:String!
+  amount:Int!
+}
+
 type AddressInfo {
   address: String
 }
 
+type mintResult{
+  message:String
+  result:Boolean!
+}
 input SetUserName {
   id: ID!
   userName: String!

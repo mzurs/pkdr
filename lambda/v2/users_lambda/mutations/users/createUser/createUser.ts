@@ -47,7 +47,7 @@ async function createUser(user: User): Promise<UserInfo | UserExists | Error> {
         } catch (error) {
           const ERROR: Error = {
             __typename: "Error",
-            message: error as string,
+            errorMessage: error as string,
           };
           return ERROR;
         }
@@ -61,14 +61,14 @@ async function createUser(user: User): Promise<UserInfo | UserExists | Error> {
     } else {
       const argsError: Error = {
         __typename: "Error",
-        message: "Arguments are invalid",
+        errorMessage: "Arguments are invalid",
       };
       return argsError;
     }
   } else {
     const ERROR: Error = {
       __typename: "Error",
-      message: "Error while creating user",
+      errorMessage: "Error while creating user",
     };
     return ERROR;
   }

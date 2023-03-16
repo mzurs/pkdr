@@ -191,6 +191,22 @@ export class UsersStack extends cdk.Stack {
       timeout: cdk.Duration.seconds(60),
     });
 
+    //PKDR LAmbda
+    const pkdrLambda = new NodejsFunction(this, "pkdrLambda", {
+      entry: join(
+        __dirname,
+        "..",
+        "lambda",
+        "v2",
+        "pkdr_lambda",
+        "src",
+        "index.ts"
+      ),
+      handler: "handler",
+      runtime: Runtime.NODEJS_16_X,
+      timeout: cdk.Duration.seconds(60),
+    });
+
     const userApiServiceRole: iam.Role = new iam.Role(
       this,
       "userApiServiceRole",
@@ -203,6 +219,19 @@ export class UsersStack extends cdk.Stack {
         resources: ["*"],
         actions: ["lambda:InvokeFunction"],
       })
+    );
+    const pkdrLambdaDataSource = new appsync.CfnDataSource(
+      this,
+      "pkdrLambdaDataSource",
+      {
+        apiId: pkdrFinanceUsersApi.attrApiId,
+        name: "pkdrLambdaDataSource",
+        type: "AWS_LAMBDA",
+        lambdaConfig: {
+          lambdaFunctionArn: pkdrLambda.functionArn,
+        },
+        serviceRoleArn: userApiServiceRole.roleArn,
+      }
     );
     const zkLambdaDataSource = new appsync.CfnDataSource(
       this,
@@ -244,6 +273,41 @@ export class UsersStack extends cdk.Stack {
         serviceRoleArn: userApiServiceRole.roleArn,
       }
     );
+
+    // ----------------------------------PKDR resolvers------------------------------------------------
+
+    // ------------------------Mutations ------------------------
+    const resolver_setProfileAddress: appsync.CfnResolver =
+      new appsync.CfnResolver(this, "resolver_setProfileAddress", {
+        apiId: pkdrFinanceUsersApi.attrApiId,
+        typeName: "Mutation",
+        fieldName: "setProfileAddress",
+        dataSourceName: pkdrLambdaDataSource.name,
+      });
+
+    const resolver_mintPKDR: appsync.CfnResolver = new appsync.CfnResolver(
+      this,
+      "resolver_mintPKDR",
+      {
+        apiId: pkdrFinanceUsersApi.attrApiId,
+        typeName: "Mutation",
+        fieldName: "mintPKDR",
+        dataSourceName: pkdrLambdaDataSource.name,
+      }
+    );
+
+    // ------------------------Query ------------------------
+    const resolver_getProfileAddress: appsync.CfnResolver =
+      new appsync.CfnResolver(this, "resolver_getProfileAddress", {
+        apiId: pkdrFinanceUsersApi.attrApiId,
+        typeName: "Query",
+        fieldName: "getProfileAddress",
+        dataSourceName: pkdrLambdaDataSource.name,
+      });
+
+    //------------------------------Profile resolvers------------------------------------------------
+
+    //--------------------------------Mutation ------------------------------------------------
     const resolver_zeroKnowledgeProfile: appsync.CfnResolver =
       new appsync.CfnResolver(this, "resolver_zeroKnowledgeProfile", {
         apiId: pkdrFinanceUsersApi.attrApiId,
@@ -251,6 +315,7 @@ export class UsersStack extends cdk.Stack {
         fieldName: "zeroKnowledgeProfile",
         dataSourceName: zkLambdaDataSource.name,
       });
+
     const resolver_createUser: appsync.CfnResolver = new appsync.CfnResolver(
       this,
       "resolver_createUser",
@@ -323,6 +388,7 @@ export class UsersStack extends cdk.Stack {
         fieldName: "getAddressByUserName",
         dataSourceName: usersLambdaDataSource.name,
       });
+    //PKDR resolvers;
 
     resolver_getAddressByUserName.node.addDependency(pkdrFinanceUsersApiSchema);
     resolver_getAddressByUserName.node.addDependency(usersLambdaDataSource);
@@ -347,6 +413,15 @@ export class UsersStack extends cdk.Stack {
 
     resolver_zeroKnowledgeProfile.node.addDependency(pkdrFinanceUsersApiSchema);
     resolver_zeroKnowledgeProfile.node.addDependency(zkLambdaDataSource);
+
+    resolver_setProfileAddress.node.addDependency(pkdrFinanceUsersApiSchema);
+    resolver_setProfileAddress.node.addDependency(pkdrLambdaDataSource);
+
+    resolver_mintPKDR.node.addDependency(pkdrFinanceUsersApiSchema);
+    resolver_mintPKDR.node.addDependency(pkdrLambdaDataSource);
+
+    resolver_getProfileAddress.node.addDependency(pkdrFinanceUsersApiSchema);
+    resolver_getProfileAddress.node.addDependency(pkdrLambdaDataSource);
 
     const resolver_deleteUser: appsync.CfnResolver = new appsync.CfnResolver(
       this,

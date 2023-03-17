@@ -66,11 +66,16 @@ input zkParams {
 
 input mintInfo {
   address:String!
-  amount:Int!
+  amount:String!
 }
 
 type AddressInfo {
   address: String
+}
+
+type approveResult {
+  message:String
+  result:Boolean
 }
 
 type mintResult{

@@ -296,6 +296,17 @@ export class UsersStack extends cdk.Stack {
       }
     );
 
+    const resolver_approve: appsync.CfnResolver = new appsync.CfnResolver(
+      this,
+      "resolver_approve",
+      {
+        apiId: pkdrFinanceUsersApi.attrApiId,
+        typeName: "Mutation",
+        fieldName: "approve",
+        dataSourceName: pkdrLambdaDataSource.name,
+      }
+    );
+
     // ------------------------Query ------------------------
     const resolver_getProfileAddress: appsync.CfnResolver =
       new appsync.CfnResolver(this, "resolver_getProfileAddress", {
@@ -422,6 +433,9 @@ export class UsersStack extends cdk.Stack {
 
     resolver_getProfileAddress.node.addDependency(pkdrFinanceUsersApiSchema);
     resolver_getProfileAddress.node.addDependency(pkdrLambdaDataSource);
+
+    resolver_approve.node.addDependency(pkdrFinanceUsersApiSchema);
+    resolver_approve.node.addDependency(pkdrLambdaDataSource);
 
     const resolver_deleteUser: appsync.CfnResolver = new appsync.CfnResolver(
       this,

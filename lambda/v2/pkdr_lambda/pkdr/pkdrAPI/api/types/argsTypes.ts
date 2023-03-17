@@ -1,6 +1,6 @@
 type mintInfo = {
   address: string;
-  amount: number;
+  amount: string;
 };
 
 export { mintInfo };

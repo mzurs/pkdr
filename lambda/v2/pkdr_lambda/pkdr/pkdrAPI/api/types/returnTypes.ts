@@ -3,4 +3,8 @@ type mintResult = {
   result: boolean;
 };
 
-export { mintResult };
+type approveResult={
+  message: string;
+  result: boolean;
+}
+export { mintResult, approveResult };

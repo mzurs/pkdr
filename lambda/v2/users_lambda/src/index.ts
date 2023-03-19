@@ -8,6 +8,8 @@ import zkProfile from "../mutations/users/createProfile/createProfile";
 import setUserName from "../mutations/users/setUserName/setUserName";
 import addContacts from "../mutations/users/addContacts/addContacts";
 import getAddressByUserName from "../query/users/getAddressByUserName/getAddressByUserName";
+import create_ETH_Profile from "../mutations/users/create_ETH_Profile/create_ETH_Profile";
+import getUsersCount from "../query/admin/getUsersCount/getUsersCount";
 
 exports.handler = async (event: any, context: any) => {
   switch (event.info.fieldName) {
@@ -39,6 +41,11 @@ exports.handler = async (event: any, context: any) => {
     case "getAddressByUserName":
       return await getAddressByUserName(event.arguments.userName);
 
+    case "create_ETH_Profile":
+      return await create_ETH_Profile(event.arguments.address);
+
+      case "getUsersCount":
+        return await getUsersCount();
     default:
       return null;
   }

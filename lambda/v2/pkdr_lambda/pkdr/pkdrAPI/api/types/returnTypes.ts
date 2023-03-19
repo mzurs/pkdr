@@ -3,8 +3,37 @@ type mintResult = {
   result: boolean;
 };
 
-type approveResult={
+type approveResult = {
   message: string;
   result: boolean;
-}
-export { mintResult, approveResult };
+};
+
+type SetPlatFormFeeResult = {
+  message: string;
+  result: boolean;
+};
+
+type TransferResult = {
+  from: string;
+  to: string;
+  amount: string;
+  message: string;
+  result: boolean;
+  hash?: string;
+};
+
+type TransferFromResult = {
+  from: string;
+  to: string;
+  amount: string;
+  message: string;
+  result: boolean;
+  hash?: string;
+};
+export {
+  mintResult,
+  approveResult,
+  SetPlatFormFeeResult,
+  TransferResult,
+  TransferFromResult,
+};

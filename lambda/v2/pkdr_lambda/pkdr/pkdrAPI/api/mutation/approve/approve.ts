@@ -34,7 +34,7 @@ const approve = async (userPrivateKey: string): Promise<approveResult> => {
 
     return res;
   } catch (error) {
-    res.message = JSON.stringify(error as unknown as any);
+    res.message = JSON.stringify((error as unknown as any).message);
     res.result = false;
     return res;
   }

@@ -42,6 +42,12 @@ type AddressInfo = {
   __typename: string;
   address: string;
 };
+
+type Create_ETH_Profile_Result = {
+  message: string;
+  result: boolean;
+};
+
 export {
   UserExists,
   UserNotExists,
@@ -49,5 +55,6 @@ export {
   UpdatedResult,
   DeletedResult,
   User,
-  AddressInfo
+  AddressInfo,
+  Create_ETH_Profile_Result
 };

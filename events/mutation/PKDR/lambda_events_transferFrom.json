@@ -1,0 +1,13 @@
+{
+    "info": {
+      "fieldName": "transferFrom"
+    },
+    "arguments": {
+      "transferFromParams": {
+        "from": "0x567f7947bfFA5F0f4e52F7E9aC634a004ff0CE8D",
+        "to": "0xb7Ee6b74e9C875BEd4e3009d89e339185e80c26d",
+        "amount": "10"
+      }
+    }
+  }
+  

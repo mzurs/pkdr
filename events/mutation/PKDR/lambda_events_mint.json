@@ -1,0 +1,11 @@
+{
+  "info": {
+    "fieldName": "mintPKDR"
+  },
+  "arguments": {
+    "mint": {
+      "address": "0x567f7947bfFA5F0f4e52F7E9aC634a004ff0CE8D",
+      "amount": "10.0"
+    }
+  }
+}

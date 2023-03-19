@@ -205,6 +205,8 @@ export class UsersStack extends cdk.Stack {
       handler: "handler",
       runtime: Runtime.NODEJS_16_X,
       timeout: cdk.Duration.seconds(60),
+      memorySize: 1024,
+      ephemeralStorageSize: cdk.Size.mebibytes(1024),
     });
 
     const userApiServiceRole: iam.Role = new iam.Role(
@@ -295,6 +297,27 @@ export class UsersStack extends cdk.Stack {
         dataSourceName: pkdrLambdaDataSource.name,
       }
     );
+    const resolver_transfer: appsync.CfnResolver = new appsync.CfnResolver(
+      this,
+      "resolver_transfer",
+      {
+        apiId: pkdrFinanceUsersApi.attrApiId,
+        typeName: "Mutation",
+        fieldName: "transfer",
+        dataSourceName: pkdrLambdaDataSource.name,
+      }
+    );
+
+    const resolver_transferFrom: appsync.CfnResolver = new appsync.CfnResolver(
+      this,
+      "resolver_transferFrom",
+      {
+        apiId: pkdrFinanceUsersApi.attrApiId,
+        typeName: "Mutation",
+        fieldName: "transferFrom",
+        dataSourceName: pkdrLambdaDataSource.name,
+      }
+    );
 
     const resolver_approve: appsync.CfnResolver = new appsync.CfnResolver(
       this,
@@ -307,12 +330,29 @@ export class UsersStack extends cdk.Stack {
       }
     );
 
+    //setPlatFormFee
+    const resolver_setPlatFormFee: appsync.CfnResolver =
+      new appsync.CfnResolver(this, "resolver_setPlatFormFee", {
+        apiId: pkdrFinanceUsersApi.attrApiId,
+        typeName: "Mutation",
+        fieldName: "setPlatFormFee",
+        dataSourceName: pkdrLambdaDataSource.name,
+      });
     // ------------------------Query ------------------------
+
     const resolver_getProfileAddress: appsync.CfnResolver =
       new appsync.CfnResolver(this, "resolver_getProfileAddress", {
         apiId: pkdrFinanceUsersApi.attrApiId,
         typeName: "Query",
         fieldName: "getProfileAddress",
+        dataSourceName: pkdrLambdaDataSource.name,
+      });
+
+    const resolver_getPlatFormFees: appsync.CfnResolver =
+      new appsync.CfnResolver(this, "resolver_getPlatFormFees", {
+        apiId: pkdrFinanceUsersApi.attrApiId,
+        typeName: "Query",
+        fieldName: "getPlatFormFee",
         dataSourceName: pkdrLambdaDataSource.name,
       });
 
@@ -337,6 +377,14 @@ export class UsersStack extends cdk.Stack {
         dataSourceName: usersLambdaDataSource.name,
       }
     );
+
+    const resolver_create_ETH_Profile: appsync.CfnResolver =
+      new appsync.CfnResolver(this, "resolver_create_ETH_Profile", {
+        apiId: pkdrFinanceUsersApi.attrApiId,
+        typeName: "Mutation",
+        fieldName: "create_ETH_Profile",
+        dataSourceName: usersLambdaDataSource.name,
+      });
     const resolver_zkProfile: appsync.CfnResolver = new appsync.CfnResolver(
       this,
       "resolver_zkProfile",
@@ -399,7 +447,35 @@ export class UsersStack extends cdk.Stack {
         fieldName: "getAddressByUserName",
         dataSourceName: usersLambdaDataSource.name,
       });
+
+    //--------------------------------Query ------------------------------------------------
+
+    //get Users Count from ETH Contract
+    const resolver_getUsersCount: appsync.CfnResolver = new appsync.CfnResolver(
+      this,
+      "resolver_getUsersCount",
+      {
+        apiId: pkdrFinanceUsersApi.attrApiId,
+        typeName: "Query",
+        fieldName: "getUsersCount",
+        dataSourceName: usersLambdaDataSource.name,
+      }
+    );
+
+    resolver_getUsersCount.node.addDependency(pkdrFinanceUsersApiSchema);
+    resolver_getUsersCount.node.addDependency(usersLambdaDataSource);
+
     //PKDR resolvers;
+    resolver_getPlatFormFees.node.addDependency(pkdrFinanceUsersApiSchema);
+    resolver_getPlatFormFees.node.addDependency(pkdrLambdaDataSource);
+
+    //resolver_transfer
+    resolver_transfer.node.addDependency(pkdrFinanceUsersApiSchema);
+    resolver_transfer.node.addDependency(pkdrLambdaDataSource);
+
+    //resolver_transferFrom
+    resolver_transferFrom.node.addDependency(pkdrFinanceUsersApiSchema);
+    resolver_transferFrom.node.addDependency(pkdrLambdaDataSource);
 
     resolver_getAddressByUserName.node.addDependency(pkdrFinanceUsersApiSchema);
     resolver_getAddressByUserName.node.addDependency(usersLambdaDataSource);
@@ -419,6 +495,9 @@ export class UsersStack extends cdk.Stack {
     resolver_createUser.node.addDependency(pkdrFinanceUsersApiSchema);
     resolver_createUser.node.addDependency(usersLambdaDataSource);
 
+    resolver_create_ETH_Profile.node.addDependency(pkdrFinanceUsersApiSchema);
+    resolver_create_ETH_Profile.node.addDependency(usersLambdaDataSource);
+
     resolver_getUserById.node.addDependency(pkdrFinanceUsersApiSchema);
     resolver_getUserById.node.addDependency(usersLambdaDataSource);
 
@@ -436,6 +515,9 @@ export class UsersStack extends cdk.Stack {
 
     resolver_approve.node.addDependency(pkdrFinanceUsersApiSchema);
     resolver_approve.node.addDependency(pkdrLambdaDataSource);
+    //resolver_setPlatFormFee
+    resolver_setPlatFormFee.node.addDependency(pkdrFinanceUsersApiSchema);
+    resolver_setPlatFormFee.node.addDependency(pkdrLambdaDataSource);
 
     const resolver_deleteUser: appsync.CfnResolver = new appsync.CfnResolver(
       this,

@@ -10,6 +10,7 @@ import "dotenv/config";
 import "solidity-coverage";
 import "hardhat-deploy";
 import "solidity-coverage";
+import { ethers } from "ethers";
 const MUMBAI_RPC_URL = process.env.MUMBAI_RPC_URL;
 const MUMBAI_PRIVATE_KEY = <string>process.env.MUMBAI_PRIVATE_KEY;
 

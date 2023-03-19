@@ -41,32 +41,35 @@ async function deployProfile(hre: HardhatRuntimeEnvironment) {
   //     },
   //     contract: 'Profiles',
   // })
-  const profilesDeploy = await deploy("Profiles", {
-    contract: "Profiles",
-    from: deployer,
-    args: [],
-    proxy: {
-      proxyContract: "ERC1967Proxy",
-      proxyArgs: ["{implementation}", "{data}"],
-      execute: {
-        init: {
-          methodName: "initialize",
-          args: [],
+  const profilesDeploy = await deploy(
+    "Profiles",
+    {
+      contract: "Profiles",
+      from: deployer,
+      args: [],
+      proxy: {
+        proxyContract: "ERC1967Proxy",
+        proxyArgs: ["{implementation}", "{data}"],
+        execute: {
+          init: {
+            methodName: "initialize",
+            args: [],
+          },
         },
       },
+      log: true,
     },
-    log: true,
-  });
-
+ 
+  );
   log(`Profiles Address at ${profilesDeploy.address}`);
 
   const profileABI = JSON.stringify(profilesDeploy.abi);
-  const profileABIPath = join(
+  const profileABIPath_I = join(
     __dirname,
     "..",
     "/",
     "..",
-   
+
     "/",
     "pkdrAPI",
     "/",
@@ -74,11 +77,31 @@ async function deployProfile(hre: HardhatRuntimeEnvironment) {
     "/",
     "profileABI.json"
   );
-  console.log(`profileABIPath: ${profileABIPath}`);
-  writeFileSync(profileABIPath, profileABI, { encoding: "utf-8" });
+  console.log(`profileABIPath_I: ${profileABIPath_I}`);
+  writeFileSync(profileABIPath_I, profileABI, { encoding: "utf-8" });
+
+  const profileABIPath_II = join(
+    __dirname,
+    "..",
+    "/",
+    "..",
+    "/",
+    "..",
+    "/",
+    "..",
+    "/",
+    "users_lambda",
+    "/",
+    "profileConstants",
+    "/",
+    "profileABI.json"
+  );
+  console.log(`profileABIPath_II: ${profileABIPath_II}`);
+  writeFileSync(profileABIPath_II, profileABI, { encoding: "utf-8" });
 
   const profileAddress = profilesDeploy.address;
-  const profileAddressPath = join(
+
+  const profileAddressPath_I = join(
     __dirname,
     "..",
     "/",
@@ -91,12 +114,33 @@ async function deployProfile(hre: HardhatRuntimeEnvironment) {
     "/",
     "profileAddress.json"
   );
-  console.log(profileAddressPath);
-  writeFileSync(profileAddressPath, `${JSON.stringify(profileAddress)}`, {
+  console.log(profileAddressPath_I);
+  writeFileSync(profileAddressPath_I, `${JSON.stringify(profileAddress)}`, {
+    encoding: "utf-8",
+  });
+
+  const profileAddressPath_II = join(
+    __dirname,
+    "..",
+    "/",
+    "..",
+    "/",
+    "..",
+    "/",
+    "..",
+    "/",
+    "users_lambda",
+    "/",
+    "profileConstants",
+    "/",
+    "profileAddress.json"
+  );
+  console.log(profileAddressPath_II);
+  writeFileSync(profileAddressPath_II, `${JSON.stringify(profileAddress)}`, {
     encoding: "utf-8",
   });
 }
-
+//profileConstants
 export default deployProfile;
 
 deployProfile.tags = ["Profiles", "all"];

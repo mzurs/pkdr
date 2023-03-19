@@ -96,4 +96,4 @@ await deploy('PKDR', {
 
 export default deployProfile;
 
-deployProfile.tags = ["Profiles","all"];
+deployProfile.tags = ["PKDR","all"];

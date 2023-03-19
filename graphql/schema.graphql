@@ -6,18 +6,25 @@ type Mutation {
   setUserName(setname: SetUserName): String @aws_lambda
   addContacts(user: UpdateContactList!): updateUserResult @aws_lambda
   zeroKnowledgeProfile(zkp: zkParams): AWSJSON
+  create_ETH_Profile(address: String): Create_ETH_Profile_Result @aws_lambda
 
-
-  setProfileAddress:Boolean;
-  mintPKDR(mint:mintInfo):mintResult @aws_lambda
-  approve(privateKey:String):Boolean @aws_lambda
+  setProfileAddress: Boolean @aws_lambda
+  mintPKDR(mint: mintInfo): mintResult @aws_lambda
+  approve(privateKey: String): approveResult @aws_lambda
+  setPlatFormFee(fee: String): SetPlatFormFeeResult @aws_lambda
+  transfer(transferParams: TransferParams): TransferResult @aws_lambda
+  transferFrom(transferFromParams: TransferFromParams): TransferFromResult
+    @aws_lambda
 }
 
 type Query {
   getUserByEmail(id: ID!): getUserResult @aws_lambda
   getAllUserInfo: [User] @aws_lambda
   getAddressByUserName(userName: String): getAddressByUserNameResult @aws_lambda
-  getProfileAddress:String @aws_lambda
+  getUsersCount: Int @aws_lambda
+
+  getProfileAddress: String @aws_lambda
+  getPlatFormFee: String @aws_lambda
 }
 
 union createUserResult = UserInfo | UserExists | Error
@@ -65,22 +72,26 @@ input zkParams {
 }
 
 input mintInfo {
-  address:String!
-  amount:String!
+  address: String!
+  amount: String!
 }
 
 type AddressInfo {
   address: String
 }
 
+type SetPlatFormFeeResult {
+  message: String
+  result: Boolean
+}
 type approveResult {
-  message:String
-  result:Boolean
+  message: String
+  result: Boolean
 }
 
-type mintResult{
-  message:String
-  result:Boolean!
+type mintResult {
+  message: String
+  result: Boolean!
 }
 input SetUserName {
   id: ID!
@@ -124,4 +135,38 @@ type User @aws_lambda {
   COUNTRY: String
   POSTAL_CODE: String
   ADDRESS: String
+}
+
+type Create_ETH_Profile_Result {
+  message: String
+  result: Boolean
+}
+
+input TransferParams {
+  to: String
+  amount: String
+}
+
+input TransferFromParams {
+  from: String
+  to: String
+  amount: String
+}
+
+type TransferResult {
+  from: String
+  to: String
+  amount: String
+  message: String
+  result: Boolean
+  hash: String
+}
+
+type TransferFromResult {
+  from: String
+  to: String
+  amount: String
+  message: String
+  result: Boolean
+  hash: String
 }

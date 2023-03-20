@@ -15,6 +15,8 @@ type Mutation {
   transfer(transferParams: TransferParams): TransferResult @aws_lambda
   transferFrom(transferFromParams: TransferFromParams): TransferFromResult
     @aws_lambda
+  burn(amount: String): BurnResult @aws_lambda
+  burnFrom(burnFromParams: BurnFromParams): BurnFromResult @aws_lambda
 }
 
 type Query {
@@ -25,6 +27,7 @@ type Query {
 
   getProfileAddress: String @aws_lambda
   getPlatFormFee: String @aws_lambda
+  getETHBalance(address: String!): String @aws_lambda
 }
 
 union createUserResult = UserInfo | UserExists | Error
@@ -74,6 +77,10 @@ input zkParams {
 input mintInfo {
   address: String!
   amount: String!
+}
+input BurnFromParams {
+  address: String!
+  amount: String
 }
 
 type AddressInfo {
@@ -169,4 +176,19 @@ type TransferFromResult {
   message: String
   result: Boolean
   hash: String
+}
+
+type BurnResult {
+  hash: String
+  amount: String
+  result: Boolean
+  message: String
+}
+
+type BurnFromResult{
+  hash: String
+  from: String
+  amount: String
+  result: Boolean
+  message: String
 }

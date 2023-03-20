@@ -338,6 +338,29 @@ export class UsersStack extends cdk.Stack {
         fieldName: "setPlatFormFee",
         dataSourceName: pkdrLambdaDataSource.name,
       });
+
+    const resolver_burn: appsync.CfnResolver = new appsync.CfnResolver(
+      this,
+      "resolver_burn",
+      {
+        apiId: pkdrFinanceUsersApi.attrApiId,
+        typeName: "Mutation",
+        fieldName: "burn",
+        dataSourceName: pkdrLambdaDataSource.name,
+      }
+    );
+
+    const resolver_burnFrom: appsync.CfnResolver = new appsync.CfnResolver(
+      this,
+      "resolver_burnFrom",
+      {
+        apiId: pkdrFinanceUsersApi.attrApiId,
+        typeName: "Mutation",
+        fieldName: "burnFrom",
+        dataSourceName: pkdrLambdaDataSource.name,
+      }
+    );
+
     // ------------------------Query ------------------------
 
     const resolver_getProfileAddress: appsync.CfnResolver =
@@ -355,6 +378,17 @@ export class UsersStack extends cdk.Stack {
         fieldName: "getPlatFormFee",
         dataSourceName: pkdrLambdaDataSource.name,
       });
+
+    const resolver_getETHBalance: appsync.CfnResolver = new appsync.CfnResolver(
+      this,
+      "resolver_getETHBalance",
+      {
+        apiId: pkdrFinanceUsersApi.attrApiId,
+        typeName: "Query",
+        fieldName: "getETHBalance",
+        dataSourceName: pkdrLambdaDataSource.name,
+      }
+    );
 
     //------------------------------Profile resolvers------------------------------------------------
 
@@ -476,6 +510,18 @@ export class UsersStack extends cdk.Stack {
     //resolver_transferFrom
     resolver_transferFrom.node.addDependency(pkdrFinanceUsersApiSchema);
     resolver_transferFrom.node.addDependency(pkdrLambdaDataSource);
+
+    //resolver_burn
+    resolver_burn.node.addDependency(pkdrFinanceUsersApiSchema);
+    resolver_burn.node.addDependency(pkdrLambdaDataSource);
+
+    //resolver_burnFrom
+    resolver_burnFrom.node.addDependency(pkdrFinanceUsersApiSchema);
+    resolver_burnFrom.node.addDependency(pkdrLambdaDataSource);
+
+    //resolver_getETHBalance
+    resolver_getETHBalance.node.addDependency(pkdrFinanceUsersApiSchema);
+    resolver_getETHBalance.node.addDependency(pkdrLambdaDataSource);
 
     resolver_getAddressByUserName.node.addDependency(pkdrFinanceUsersApiSchema);
     resolver_getAddressByUserName.node.addDependency(usersLambdaDataSource);

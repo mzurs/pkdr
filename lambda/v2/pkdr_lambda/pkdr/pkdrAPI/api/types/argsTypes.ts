@@ -8,8 +8,13 @@ type TransferParams = {
 };
 
 type TransferFromParams = {
-  from:string;
+  from: string;
   to: string;
   amount: string;
 };
-export { mintInfo, TransferParams ,TransferFromParams};
+
+type BurnFromParams = {
+  address: string;
+  amount: string;
+};
+export { mintInfo, TransferParams, TransferFromParams, BurnFromParams };

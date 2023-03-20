@@ -30,10 +30,28 @@ type TransferFromResult = {
   result: boolean;
   hash?: string;
 };
+
+type BurnResult = {
+  hash?: string;
+  amount: string;
+  result: boolean;
+  message: string;
+};
+
+type BurnFromResult = {
+  hash?: string;
+  from: string;
+  amount: string;
+  result: boolean;
+  message: string;
+};
+
 export {
   mintResult,
   approveResult,
   SetPlatFormFeeResult,
   TransferResult,
   TransferFromResult,
+  BurnResult,
+  BurnFromResult,
 };

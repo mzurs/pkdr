@@ -6,9 +6,13 @@ import getPlatFormFee from "../pkdr/pkdrAPI/api/query/getPlatFormFee/getPlatForm
 import setPlatFormFee from "../pkdr/pkdrAPI/api/mutation/setPlatformFee/setPlatformFee";
 import transfer from "../pkdr/pkdrAPI/api/mutation/transfer/transfer";
 import transferFrom from "../pkdr/pkdrAPI/api/mutation/transferFrom/transferFrom";
+import getETHBalance from "../pkdr/pkdrAPI/api/query/getETHBalance/getETHBalance";
+import burnFrom from "../pkdr/pkdrAPI/api/mutation/burnFrom/burnFrom";
+import burn from "../pkdr/pkdrAPI/api/mutation/burn/burn";
 
 exports.handler = async (event: any, context: any) => {
   switch (event.info.fieldName) {
+    //----------------Mutation-------------------
     // Mint PKDR function
     case "mintPKDR":
       return await mintPKDR(event.arguments.mint);
@@ -19,21 +23,32 @@ exports.handler = async (event: any, context: any) => {
     case "setProfileAddress":
       return await setProfileAddress();
 
-      case "transfer":
-        return await transfer(event.arguments.transferParams);
+    case "transfer":
+      return await transfer(event.arguments.transferParams);
 
-        case "transferFrom":
-          return await transferFrom(event.arguments.transferFromParams)
+    case "transferFrom":
+      return await transferFrom(event.arguments.transferFromParams);
 
     case "setPlatFormFee":
       return await setPlatFormFee(event.arguments.fee);
 
+    case "burn":
+      return await burn(event.arguments.amount);
+
+    case "burnFrom":
+      return await burnFrom(event.arguments.burnFromParams);
+
+    //----------------Query-------------------
     //GET Profile Address from PKDR contract
     case "getProfileAddress":
       return await getProfileAddress();
 
     case "getPlatFormFee":
       return await getPlatFormFee();
+
+    case "getETHBalance":
+      return await getETHBalance(event.arguments.address);
+
     // Should return null if no fields matched
     default:
       return null;

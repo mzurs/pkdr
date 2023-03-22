@@ -276,6 +276,18 @@ export class UsersStack extends cdk.Stack {
       }
     );
 
+    //-------------------------------------TOPUP Resolvers----------------------------------------------
+    const resolver_topUpAddress: appsync.CfnResolver = new appsync.CfnResolver(
+      this,
+      "resolver_topUpAddress",
+      {
+        apiId: pkdrFinanceUsersApi.attrApiId,
+        typeName: "Mutation",
+        fieldName: "topUpAddress",
+        dataSourceName: pkdrLambdaDataSource.name,
+      }
+    );
+
     // ----------------------------------PKDR resolvers------------------------------------------------
 
     // ------------------------Mutations ------------------------
@@ -495,6 +507,9 @@ export class UsersStack extends cdk.Stack {
         dataSourceName: usersLambdaDataSource.name,
       }
     );
+    //resolver_topUpAddress
+    resolver_topUpAddress.node.addDependency(pkdrFinanceUsersApiSchema);
+    resolver_topUpAddress.node.addDependency(pkdrLambdaDataSource);
 
     resolver_getUsersCount.node.addDependency(pkdrFinanceUsersApiSchema);
     resolver_getUsersCount.node.addDependency(usersLambdaDataSource);

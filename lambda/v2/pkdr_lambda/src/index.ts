@@ -9,6 +9,7 @@ import transferFrom from "../pkdr/pkdrAPI/api/mutation/transferFrom/transferFrom
 import getETHBalance from "../pkdr/pkdrAPI/api/query/getETHBalance/getETHBalance";
 import burnFrom from "../pkdr/pkdrAPI/api/mutation/burnFrom/burnFrom";
 import burn from "../pkdr/pkdrAPI/api/mutation/burn/burn";
+import topUpAddress from "../topUp/topUpApi/api/topUpAddress";
 
 exports.handler = async (event: any, context: any) => {
   switch (event.info.fieldName) {
@@ -48,6 +49,14 @@ exports.handler = async (event: any, context: any) => {
 
     case "getETHBalance":
       return await getETHBalance(event.arguments.address);
+
+
+
+
+//----------------------------------------------TOP UP Contract-----------------------------------------------------
+
+case "topUpAddress":
+  return await topUpAddress(event.arguments.address);
 
     // Should return null if no fields matched
     default:

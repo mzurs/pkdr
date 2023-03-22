@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: SEE LICENSE IN LICENSE
 pragma solidity ^0.8.7;
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
-import "./PriceConverter.sol";
+
+// import "./PriceConverter.sol";
 
 contract topUp {
-    using PriceConverter for uint256;
-    uint256 private TOPUP_AMOUNT_IN_PKR = 10;
+    // using PriceConverter for uint256;
+    uint256 private TOPUP_AMOUNT_IN_PKR = 20;
     address private immutable i_pkdrOrgAddress;
     AggregatorV3Interface private s_priceFeed;
 
@@ -54,29 +55,20 @@ contract topUp {
 
     //4.external
     //5.public
-    function getRate() public view returns (uint256) {
-        // return PriceConverter.getConversionRate(2,s_priceFeed);
-        (
-            ,
-            /*uint80 roundID*/
-            int price /*uint startedAt*/ /*uint timeStamp*/ /*uint80 answeredInRound*/,
-            ,
-            ,
-
-        ) = s_priceFeed.latestRoundData();
-        return uint256(price);
+    function getPrice() public view returns (uint256) {
+        (, int256 answer, , , ) = s_priceFeed.latestRoundData();
+        // ETH/USD rate in 18 digit
+        return uint256(answer * 10000000000);
     }
 
-    function topUpAddress(
-        address payable _to,
-        uint256 amount
-    ) public onlyPkdrOrg returns (uint256) {
-        // uint256 amountToDeposit = TOPUP_AMOUNT_IN_PKR /
-        //     (getRate() * conversionRateUsdToPkr);
-
+    function topUpAddress(address payable _to, uint256 amount)
+        public
+        onlyPkdrOrg
+        returns (uint256)
+    {
         (bool success, ) = _to.call{value: amount}("");
 
-        if (!success) revert TOPUP_FAILED();
+        require(success);
 
         emit topUpCompleted(_to, amount);
 

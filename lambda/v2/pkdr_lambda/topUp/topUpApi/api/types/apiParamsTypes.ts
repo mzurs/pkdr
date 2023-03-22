@@ -1,5 +1,10 @@
-type PARAMS={
-address?:string,
+type PARAMS = {
+  address?: string;
+};
 
-}
-export default PARAMS;
+type TopUpAddressResult = {
+  hash: string;
+  message: string;
+  result: boolean;
+};
+export { PARAMS, TopUpAddressResult };

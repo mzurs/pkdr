@@ -8,6 +8,8 @@ type Mutation {
   zeroKnowledgeProfile(zkp: zkParams): AWSJSON
   create_ETH_Profile(address: String): Create_ETH_Profile_Result @aws_lambda
 
+  topUpAddress(address: String): TopUpAddressResult @aws_lambda
+
   setProfileAddress: Boolean @aws_lambda
   mintPKDR(mint: mintInfo): mintResult @aws_lambda
   approve(privateKey: String): approveResult @aws_lambda
@@ -144,6 +146,12 @@ type User @aws_lambda {
   ADDRESS: String
 }
 
+type TopUpAddressResult {
+  hash: String
+  message: String
+  result: String
+}
+
 type Create_ETH_Profile_Result {
   message: String
   result: Boolean
@@ -185,7 +193,7 @@ type BurnResult {
   message: String
 }
 
-type BurnFromResult{
+type BurnFromResult {
   hash: String
   from: String
   amount: String

@@ -17,8 +17,7 @@ async function getRateMaticToUsd(): Promise<number> {
   );
 
   const contract = new ethers.Contract(contractAddress, contractABI, provider);
-  let getRate = parseFloat((await contract.getRate()).toString());
-  getRate = ((getRate * 10000000000) / 1000000000000000000);
+  let getRate = (await contract.getPrice());
   return getRate;
 }
 

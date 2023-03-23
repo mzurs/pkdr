@@ -402,6 +402,17 @@ export class UsersStack extends cdk.Stack {
       }
     );
 
+    const resolver_totalSupply: appsync.CfnResolver = new appsync.CfnResolver(
+      this,
+      "resolver_totalSupply",
+      {
+        apiId: pkdrFinanceUsersApi.attrApiId,
+        typeName: "Query",
+        fieldName: "totalSupply",
+        dataSourceName: pkdrLambdaDataSource.name,
+      }
+    );
+
     //------------------------------Profile resolvers------------------------------------------------
 
     //--------------------------------Mutation ------------------------------------------------
@@ -507,6 +518,11 @@ export class UsersStack extends cdk.Stack {
         dataSourceName: usersLambdaDataSource.name,
       }
     );
+
+    //resolver_totalSupply
+    resolver_totalSupply.node.addDependency(pkdrFinanceUsersApiSchema);
+    resolver_totalSupply.node.addDependency(pkdrLambdaDataSource);
+
     //resolver_topUpAddress
     resolver_topUpAddress.node.addDependency(pkdrFinanceUsersApiSchema);
     resolver_topUpAddress.node.addDependency(pkdrLambdaDataSource);

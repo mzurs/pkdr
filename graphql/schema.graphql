@@ -30,6 +30,7 @@ type Query {
   getProfileAddress: String @aws_lambda
   getPlatFormFee: String @aws_lambda
   getETHBalance(address: String!): String @aws_lambda
+  totalSupply:String @aws_lambda
 }
 
 union createUserResult = UserInfo | UserExists | Error

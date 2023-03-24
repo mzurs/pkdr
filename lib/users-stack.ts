@@ -277,6 +277,8 @@ export class UsersStack extends cdk.Stack {
     );
 
     //-------------------------------------TOPUP Resolvers----------------------------------------------
+
+    //-------------------------------- Mutations--------------------------------
     const resolver_topUpAddress: appsync.CfnResolver = new appsync.CfnResolver(
       this,
       "resolver_topUpAddress",
@@ -284,6 +286,20 @@ export class UsersStack extends cdk.Stack {
         apiId: pkdrFinanceUsersApi.attrApiId,
         typeName: "Mutation",
         fieldName: "topUpAddress",
+        dataSourceName: pkdrLambdaDataSource.name,
+      }
+    );
+
+    //----------------------------------- Query--------------------------------
+
+    //getRateUSDPKR
+    const resolver_getRateUSDPKR: appsync.CfnResolver = new appsync.CfnResolver(
+      this,
+      "resolver_getRateUSDPKR",
+      {
+        apiId: pkdrFinanceUsersApi.attrApiId,
+        typeName: "Query",
+        fieldName: "getRateUSDPKR",
         dataSourceName: pkdrLambdaDataSource.name,
       }
     );
@@ -526,6 +542,10 @@ export class UsersStack extends cdk.Stack {
     //resolver_topUpAddress
     resolver_topUpAddress.node.addDependency(pkdrFinanceUsersApiSchema);
     resolver_topUpAddress.node.addDependency(pkdrLambdaDataSource);
+
+    //resolver_getRateUSDPKR
+    resolver_getRateUSDPKR.node.addDependency(pkdrFinanceUsersApiSchema);
+    resolver_getRateUSDPKR.node.addDependency(pkdrLambdaDataSource);
 
     resolver_getUsersCount.node.addDependency(pkdrFinanceUsersApiSchema);
     resolver_getUsersCount.node.addDependency(usersLambdaDataSource);

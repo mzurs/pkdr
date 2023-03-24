@@ -11,6 +11,7 @@ import burnFrom from "../pkdr/pkdrAPI/api/mutation/burnFrom/burnFrom";
 import burn from "../pkdr/pkdrAPI/api/mutation/burn/burn";
 import topUpAddress from "../topUp/topUpApi/api/topUpAddress";
 import totalSupply from "../pkdr/pkdrAPI/api/query/totalSupply/totalSupply";
+import getRateUSDPKR from "../topUp/topUpApi/api/getRateUSDPKR";
 
 exports.handler = async (event: any, context: any) => {
   switch (event.info.fieldName) {
@@ -58,6 +59,9 @@ exports.handler = async (event: any, context: any) => {
 
     case "topUpAddress":
       return await topUpAddress(event.arguments.address);
+
+    case "getRateUSDPKR":
+      return await getRateUSDPKR();
 
     // Should return null if no fields matched
     default:

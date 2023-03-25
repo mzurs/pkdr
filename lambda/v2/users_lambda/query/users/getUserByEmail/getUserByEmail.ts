@@ -37,13 +37,13 @@ async function getUserByEmail(
     console.log("****", err);
     const ERROR: Error = {
       __typename: "Error",
-      message: err as string,
+      errorMessage: err as string,
     };
     return ERROR;
   }
   const ERROR: Error = {
     __typename: "Error",
-    message: "Error while fetching through Email",
+    errorMessage: "Error while fetching through Email",
   };
   return ERROR;
 }

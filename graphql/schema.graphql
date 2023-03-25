@@ -8,6 +8,7 @@ type Mutation {
   zeroKnowledgeProfile(zkp: zkParams): AWSJSON
   create_ETH_Profile(address: String): Create_ETH_Profile_Result @aws_lambda
 
+
   topUpAddress(address: String): TopUpAddressResult @aws_lambda
 
   setProfileAddress: Boolean @aws_lambda
@@ -26,7 +27,10 @@ type Query {
   getAllUserInfo: [User] @aws_lambda
   getAddressByUserName(userName: String): getAddressByUserNameResult @aws_lambda
   getUsersCount: Int @aws_lambda
+  listContacts(listContactsParams: ListContactsParams): ListContactsResponse
+    @aws_lambda
 
+    
   getRateUSDPKR: String @aws_lambda
 
   getProfileAddress: String @aws_lambda
@@ -40,6 +44,7 @@ union getUserResult = UserInfo | UserNotExists | Error
 union updateUserResult = UpdatedResult | UserNotExists | Error
 union deleteUserResult = DeletedResult | UserNotExists | Error
 union getAddressByUserNameResult = AddressInfo | UserNotExists | Error
+union ListContactsResponse = ListContactsResult | UserNotExists | Error
 
 input CreateUser {
   id: ID!
@@ -54,6 +59,10 @@ input CreateUser {
   POSTAL_CODE: String
   ADDRESS: String
 }
+input ListContactsParams {
+  id: String
+}
+
 input UpdateContactList {
   id: ID!
   attributeValue: String
@@ -86,6 +95,9 @@ input mintInfo {
 input BurnFromParams {
   address: String!
   amount: String
+}
+type ListContactsResult {
+  contacts: [String]
 }
 
 type AddressInfo {

@@ -468,7 +468,17 @@ export class UsersStack extends cdk.Stack {
         dataSourceName: usersLambdaDataSource.name,
       }
     );
-
+    //listContacts
+    const resolver_listContacts: appsync.CfnResolver = new appsync.CfnResolver(
+      this,
+      "resolver_listContacts",
+      {
+        apiId: pkdrFinanceUsersApi.attrApiId,
+        typeName: "Query",
+        fieldName: "listContacts",
+        dataSourceName: usersLambdaDataSource.name,
+      }
+    );
     const resolver_getUserById: appsync.CfnResolver = new appsync.CfnResolver(
       this,
       "resolver_getUserById",
@@ -597,6 +607,9 @@ export class UsersStack extends cdk.Stack {
 
     resolver_getUserById.node.addDependency(pkdrFinanceUsersApiSchema);
     resolver_getUserById.node.addDependency(usersLambdaDataSource);
+    //resolver_listContacts
+    resolver_listContacts.node.addDependency(pkdrFinanceUsersApiSchema);
+    resolver_listContacts.node.addDependency(usersLambdaDataSource);
 
     resolver_zeroKnowledgeProfile.node.addDependency(pkdrFinanceUsersApiSchema);
     resolver_zeroKnowledgeProfile.node.addDependency(zkLambdaDataSource);

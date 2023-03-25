@@ -27,5 +27,10 @@ type UpdateContactList={
   attributeValue: string;
 
 }
-export { User,UpdateUser,SetUserName,UpdateContactList};
+
+type ListContactsParams={
+  id:string,
+}
+
+export { User,UpdateUser,SetUserName,UpdateContactList,ListContactsParams};
 

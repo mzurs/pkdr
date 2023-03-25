@@ -10,6 +10,7 @@ import addContacts from "../mutations/users/addContacts/addContacts";
 import getAddressByUserName from "../query/users/getAddressByUserName/getAddressByUserName";
 import create_ETH_Profile from "../mutations/users/create_ETH_Profile/create_ETH_Profile";
 import getUsersCount from "../query/admin/getUsersCount/getUsersCount";
+import listContacts from "../query/users/listContacts/listContacts";
 
 exports.handler = async (event: any, context: any) => {
   switch (event.info.fieldName) {
@@ -44,8 +45,12 @@ exports.handler = async (event: any, context: any) => {
     case "create_ETH_Profile":
       return await create_ETH_Profile(event.arguments.address);
 
-      case "getUsersCount":
-        return await getUsersCount();
+    case "getUsersCount":
+      return await getUsersCount();
+
+    case "listContacts":
+      return await listContacts(event.arguments.listContactsParams);
+
     default:
       return null;
   }

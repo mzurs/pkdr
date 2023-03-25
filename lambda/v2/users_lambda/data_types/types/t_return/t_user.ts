@@ -48,6 +48,11 @@ type Create_ETH_Profile_Result = {
   result: boolean;
 };
 
+type ListContactsResult={
+  __typename:string,
+  contacts:string[],
+}
+
 export {
   UserExists,
   UserNotExists,
@@ -56,5 +61,6 @@ export {
   DeletedResult,
   User,
   AddressInfo,
-  Create_ETH_Profile_Result
+  Create_ETH_Profile_Result,
+  ListContactsResult
 };

@@ -82,10 +82,14 @@ async function listContacts(
       const command = new GetItemCommand(input);
       const { Item } = await client.send(command);
       const contacts: string[] = unmarshall(Item).CONTACTS_ADDED;
-      res.contacts = contacts.filter((value, index, self) => {
-        return self.indexOf(value) === index;
-      });
-      return res;
+      if (!contacts) {
+        return res;
+      } else {
+        res.contacts = contacts.filter((value, index, self) => {
+          return self.indexOf(value) === index;
+        });
+        return res;
+      }
     } catch (err) {
       error.errorMessage = JSON.stringify((err as unknown as any).message);
       return error;

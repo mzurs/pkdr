@@ -57,7 +57,7 @@ async function addContacts(
                 },
                 ExpressionAttributeValues: {
                   ":empty_list": [],
-                  ":new_value": ["some_value"],
+                  ":new_value": [user.attributeValue],
                 },
 
                 ReturnValues: "ALL_NEW",

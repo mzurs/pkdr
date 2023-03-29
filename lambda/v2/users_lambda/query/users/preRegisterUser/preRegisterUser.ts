@@ -8,6 +8,7 @@ import { Error } from "../../../data_types/types/t_return/t_e_user";
 import {
   UserInfo,
   UserExists,
+  Create_ETH_Profile_Result,
 } from "../../../data_types/types/t_return/t_user";
 import createUser from "../../../mutations/users/createUser/createUser";
 import getCNIC from "./preRegisterUserFunctions/getCNIC/getCNIC";
@@ -15,6 +16,7 @@ import getID from "./preRegisterUserFunctions/getID/getID";
 import getPHONENUMBER from "./preRegisterUserFunctions/getPHONENUMBER/getPHONENUMBER";
 
 import topUpApi from "../../../../pkdr_lambda/topUp/topUpApi/index";
+import create_ETH_Profile from "../../../mutations/users/create_ETH_Profile/create_ETH_Profile";
 async function preRegisterUser(
   preUser: IPREREGISTERUSER
 ): Promise<Error | UserInfo | UserExists> {
@@ -39,7 +41,13 @@ async function preRegisterUser(
         };
         await topUpApi("topUpAddress", params);
         // await topUpAddress("0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266")
-        return await createUser(preUser as User);
+        const createETHProfile: Create_ETH_Profile_Result =
+          await create_ETH_Profile(preUser.ETH_ADDRESS);
+        if (createETHProfile.result) {
+          return await createUser(preUser as User);
+        } else {
+          ERROR.errorMessage = createETHProfile.message;
+        }
       } else {
         ERROR.errorMessage = `PhoneNumber => ${preUser.PHONE_NUMBER} already exists`;
         return ERROR;

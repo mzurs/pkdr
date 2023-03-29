@@ -17,4 +17,13 @@ type BurnFromParams = {
   address: string;
   amount: string;
 };
-export { mintInfo, TransferParams, TransferFromParams, BurnFromParams };
+
+type WithdrawParams = {
+  IBAN: string;
+  accountHolderName: string;
+  amount: number;
+  id:string;
+  address: string;
+  userName: string;
+};
+export { mintInfo, TransferParams, TransferFromParams, BurnFromParams,WithdrawParams };

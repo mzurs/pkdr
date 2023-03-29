@@ -12,6 +12,10 @@
   "types": "./constants.d.ts",
   "dependencies": {
     "ethers": "^5.7.2",
-    "request": "^2.88.2"
+    "request": "^2.88.2",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/uuid": "^9.0.1"
   }
 }

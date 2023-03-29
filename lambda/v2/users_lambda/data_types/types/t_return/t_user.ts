@@ -53,6 +53,12 @@ type ListContactsResult={
   contacts:string[],
 }
 
+type UserInfoResult = {
+  success: boolean;
+  message?: string;
+  value?: string | number | [] | boolean | null;
+  errorMessage?: string;
+};
 export {
   UserExists,
   UserNotExists,
@@ -62,5 +68,6 @@ export {
   User,
   AddressInfo,
   Create_ETH_Profile_Result,
-  ListContactsResult
+  ListContactsResult,
+  UserInfoResult
 };

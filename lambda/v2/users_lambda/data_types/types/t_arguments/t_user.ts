@@ -12,25 +12,33 @@ type User = {
   ADDRESS: string;
 };
 
-type UpdateUser={
-  id:string;
+type UpdateUser = {
+  id: string;
   attributeName: string;
   attributeValue: string;
-}
+};
 
-type SetUserName={
-  id:string,
-  userName:string
-}
-type UpdateContactList={
-  id:string;
+type SetUserName = {
+  id: string;
+  userName: string;
+};
+type UpdateContactList = {
+  id: string;
   attributeValue: string;
+};
 
-}
-
-type ListContactsParams={
-  id:string,
-}
-
-export { User,UpdateUser,SetUserName,UpdateContactList,ListContactsParams};
-
+type ListContactsParams = {
+  id: string;
+};
+type UserInfoParams = {
+  id: string;
+  attributeInfo: string;
+};
+export {
+  User,
+  UpdateUser,
+  SetUserName,
+  UpdateContactList,
+  ListContactsParams,
+  UserInfoParams,
+};

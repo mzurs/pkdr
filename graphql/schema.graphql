@@ -8,7 +8,6 @@ type Mutation {
   zeroKnowledgeProfile(zkp: zkParams): AWSJSON
   create_ETH_Profile(address: String): Create_ETH_Profile_Result @aws_lambda
 
-
   topUpAddress(address: String): TopUpAddressResult @aws_lambda
 
   setProfileAddress: Boolean @aws_lambda
@@ -20,6 +19,7 @@ type Mutation {
     @aws_lambda
   burn(amount: String): BurnResult @aws_lambda
   burnFrom(burnFromParams: BurnFromParams): BurnFromResult @aws_lambda
+  withdraw(withdrawParams: WithdrawParams): WithdrawParamsResult @aws_lambda
 }
 
 type Query {
@@ -29,8 +29,8 @@ type Query {
   getUsersCount: Int @aws_lambda
   listContacts(listContactsParams: ListContactsParams): ListContactsResponse
     @aws_lambda
+  getUserInfo(userInfoParams: UserInfoParams): UserInfoResult @aws_lambda
 
-    
   getRateUSDPKR: String @aws_lambda
 
   getProfileAddress: String @aws_lambda
@@ -61,6 +61,10 @@ input CreateUser {
 }
 input ListContactsParams {
   id: String
+}
+input UserInfoParams {
+  id: String
+  attributeInfo: String
 }
 
 input UpdateContactList {
@@ -95,6 +99,30 @@ input mintInfo {
 input BurnFromParams {
   address: String!
   amount: String
+}
+input WithdrawParams {
+  IBAN: String
+  accountHolderName: String
+  amount: Float
+  id: String
+  address: String
+  userName: String
+}
+type WithdrawParam {
+  IBAN: String
+  accountHolderName: String
+  amount: Float
+  id: String
+  address: String
+  userName: String
+}
+
+type WithdrawParamsResult {
+  burnResult: BurnFromResult
+  withdrawResult: WithdrawParam
+  result: Boolean
+  message: String
+  errorMessage: String
 }
 type ListContactsResult {
   contacts: [String]
@@ -159,6 +187,13 @@ type User @aws_lambda {
   COUNTRY: String
   POSTAL_CODE: String
   ADDRESS: String
+}
+
+type UserInfoResult {
+  success: Boolean
+  message: String
+  value: String
+  errorMessage: String
 }
 
 type TopUpAddressResult {

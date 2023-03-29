@@ -388,7 +388,17 @@ export class UsersStack extends cdk.Stack {
         dataSourceName: pkdrLambdaDataSource.name,
       }
     );
-
+    //withdraw
+    const resolver_withdraw: appsync.CfnResolver = new appsync.CfnResolver(
+      this,
+      "resolver_withdraw",
+      {
+        apiId: pkdrFinanceUsersApi.attrApiId,
+        typeName: "Mutation",
+        fieldName: "withdraw",
+        dataSourceName: pkdrLambdaDataSource.name,
+      }
+    );
     // ------------------------Query ------------------------
 
     const resolver_getProfileAddress: appsync.CfnResolver =
@@ -465,6 +475,18 @@ export class UsersStack extends cdk.Stack {
         apiId: pkdrFinanceUsersApi.attrApiId,
         typeName: "Mutation",
         fieldName: "zkProfile",
+        dataSourceName: usersLambdaDataSource.name,
+      }
+    );
+
+    //getUserInfo
+    const resolver_getUserInfo: appsync.CfnResolver = new appsync.CfnResolver(
+      this,
+      "resolver_getUserInfo",
+      {
+        apiId: pkdrFinanceUsersApi.attrApiId,
+        typeName: "Query",
+        fieldName: "getUserInfo",
         dataSourceName: usersLambdaDataSource.name,
       }
     );
@@ -545,6 +567,10 @@ export class UsersStack extends cdk.Stack {
       }
     );
 
+    //resolver_withdraw
+    resolver_withdraw.node.addDependency(pkdrFinanceUsersApiSchema);
+    resolver_withdraw.node.addDependency(pkdrLambdaDataSource);
+
     //resolver_totalSupply
     resolver_totalSupply.node.addDependency(pkdrFinanceUsersApiSchema);
     resolver_totalSupply.node.addDependency(pkdrLambdaDataSource);
@@ -610,6 +636,9 @@ export class UsersStack extends cdk.Stack {
     //resolver_listContacts
     resolver_listContacts.node.addDependency(pkdrFinanceUsersApiSchema);
     resolver_listContacts.node.addDependency(usersLambdaDataSource);
+    //resolver_getUserInfo
+    resolver_getUserInfo.node.addDependency(pkdrFinanceUsersApiSchema);
+    resolver_getUserInfo.node.addDependency(usersLambdaDataSource);
 
     resolver_zeroKnowledgeProfile.node.addDependency(pkdrFinanceUsersApiSchema);
     resolver_zeroKnowledgeProfile.node.addDependency(zkLambdaDataSource);

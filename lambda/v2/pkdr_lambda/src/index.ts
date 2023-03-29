@@ -12,6 +12,7 @@ import burn from "../pkdr/pkdrAPI/api/mutation/burn/burn";
 import topUpAddress from "../topUp/topUpApi/api/topUpAddress";
 import totalSupply from "../pkdr/pkdrAPI/api/query/totalSupply/totalSupply";
 import getRateUSDPKR from "../topUp/topUpApi/api/getRateUSDPKR";
+import withdraw from "../pkdr/pkdrAPI/api/mutation/withdraw/withdraw";
 
 exports.handler = async (event: any, context: any) => {
   switch (event.info.fieldName) {
@@ -41,6 +42,8 @@ exports.handler = async (event: any, context: any) => {
     case "burnFrom":
       return await burnFrom(event.arguments.burnFromParams);
 
+      case "withdraw":
+        return await withdraw(event.arguments.withdrawParams);
     //----------------Query-------------------
     //GET Profile Address from PKDR contract
     case "getProfileAddress":

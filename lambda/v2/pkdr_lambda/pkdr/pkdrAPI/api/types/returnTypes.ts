@@ -1,3 +1,5 @@
+import { WithdrawParams } from "./argsTypes";
+
 type mintResult = {
   message: string;
   result: boolean;
@@ -45,6 +47,21 @@ type BurnFromResult = {
   result: boolean;
   message: string;
 };
+type WithdrawParam = {
+  IBAN: string;
+  accountHolderName: string;
+  amount: number;
+  id:string;
+  address: string;
+  userName: string;
+};
+type WithdrawParamsResult = {
+  burnResult?: BurnFromResult;
+  withdrawResult?: WithdrawParam;
+  result: boolean;
+  message: string;
+  errorMessage: string;
+};
 
 export {
   mintResult,
@@ -54,4 +71,6 @@ export {
   TransferFromResult,
   BurnResult,
   BurnFromResult,
+  WithdrawParamsResult,
+  WithdrawParam
 };

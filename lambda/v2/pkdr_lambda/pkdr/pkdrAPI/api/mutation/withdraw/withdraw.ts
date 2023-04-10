@@ -1,7 +1,6 @@
 import {
   DynamoDBClient,
   GetItemCommand,
-  QueryCommand,
 } from "@aws-sdk/client-dynamodb";
 const { marshall, unmarshall } = require("@aws-sdk/util-dynamodb");
 import { v4 as uuidv4 } from "uuid";
@@ -22,7 +21,7 @@ const client = new DynamoDBClient({ region });
 function fundTransfer(transferID: string): Promise<any> {
   const URL = `https://api.sandbox.transferwise.tech/v3/profiles/16565240/transfers/${transferID}/payments`;
 
-  console.log("🚀 ~ file: withdraw.ts:11 ~ fundTransfer ~ URL:", URL);
+  // console.log("🚀 ~ file: withdraw.ts:11 ~ fundTransfer ~ URL:", URL);
   return new Promise((resolve, reject) => {
     const options = {
       url: URL,
@@ -111,7 +110,6 @@ function createRecipient(
     });
   });
 }
-
 function getQuote(amount: number): Promise<any> {
   const URL = "https://api.sandbox.transferwise.tech/v1/quotes";
 
@@ -169,7 +167,7 @@ const verifyUserDetails = async (
     return false;
   }
 };
-
+//PK36SCBL0000001123456702
 const withdraw = async (
   withdrawParams: WithdrawParams
 ): Promise<WithdrawParamsResult> => {
@@ -206,6 +204,7 @@ const withdraw = async (
         quote = JSON.parse(quote);
 
         const quoteId = quote["id"];
+        console.log("🚀 ~ file: withdraw.ts:209 ~ quoteId:", quoteId)
 
         let create_Recipient = (
           await createRecipient(
@@ -214,16 +213,32 @@ const withdraw = async (
           )
         ).body;
         create_Recipient = JSON.parse(create_Recipient);
+        // console.log("🚀 ~ file: withdraw.ts:217 ~ create_Recipient:", create_Recipient)
         const create_RecipientId = create_Recipient["id"];
+        console.log("🚀 ~ file: withdraw.ts:219 ~ create_RecipientId:", create_RecipientId)
 
-        let create_Transfer = (
-          await createTransfer(create_RecipientId, quoteId)
-        ).body;
-        create_Transfer = JSON.parse(create_Transfer);
-        const create_TransferId = create_Transfer["id"];
+  
+        let create_Transfer = (await createTransfer(create_RecipientId, quoteId))
+        .body;
+      create_Transfer = JSON.parse(create_Transfer);
+      console.log("🚀 ~ file: withdraw.ts:124 ~ withdraw ~ create_Transfer:", create_Transfer)
+      const create_TransferId = create_Transfer["id"];
+      console.log(
+        "🚀 ~ file: withdraw.ts:126 ~ withdraw ~ create_TransferId:",
+        create_TransferId
+      );
+
 
         let fund_Transfer = (await fundTransfer(create_TransferId)).body;
+        // console.log(
+        //   "🚀 ~ file: withdraw.ts:172 ~ withdraw ~ fund_Transfer:",
+        //   fund_Transfer
+        // );
         fund_Transfer = JSON.parse(fund_Transfer);
+        console.log(
+          "🚀 ~ file: withdraw.ts:174 ~ withdraw ~ fund_Transfer:",
+          fund_Transfer
+        );
 
         if (fund_Transfer["status"] === "COMPLETED") {
           res.burnResult = burnFromResponse;
@@ -257,3 +272,14 @@ const withdraw = async (
 };
 
 export default withdraw;
+// const params:WithdrawParam={
+//   IBAN:"PK36SCBL0000001123456702",
+//   accountHolderName:"Muhammad Zohaib",
+//   amount:1000,
+//   id:"b",
+//   userName: "b"
+// , address:"0x567f7947bfFA5F0f4e52F7E9aC634a004ff0CE8D"
+
+// }
+
+// withdraw(params)

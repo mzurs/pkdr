@@ -22,8 +22,26 @@ type WithdrawParams = {
   IBAN: string;
   accountHolderName: string;
   amount: number;
-  id:string;
+  id: string;
   address: string;
   userName: string;
 };
-export { mintInfo, TransferParams, TransferFromParams, BurnFromParams,WithdrawParams };
+
+type TransactionParams = {
+  hash: string;
+  to: string | undefined;
+  from: string | undefined;
+  amount: string | number;
+  txType: string;
+  Logs: string|null;
+  status?: string;
+};
+
+export {
+  mintInfo,
+  TransferParams,
+  TransferFromParams,
+  BurnFromParams,
+  WithdrawParams,
+  TransactionParams,
+};

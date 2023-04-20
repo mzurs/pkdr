@@ -1,10 +1,10 @@
 import getRateMaticToUsd from "./api/getRateMaticToUsd";
 import topUpAddress from "./api/topUpAddress";
-import PARAMS from "./api/types/apiParamsTypes";
+import {PARAMS, TopUpAddressResult} from "./api/types/apiParamsTypes";
 async function topUpApi(
   apiName: string,
   params?: PARAMS
-): Promise<string | number | undefined> {
+): Promise<string | number | undefined|TopUpAddressResult> {
   switch (apiName) {
     case "getContractAddress":
       return;
@@ -13,7 +13,8 @@ async function topUpApi(
     case "getTopUpBalance":
       return;
     case "topUpAddress":
-      return !params?.address ? 0 : await topUpAddress(params?.address!);
+      return await topUpAddress(params?.address!);
+      // return !params?.address ? 0 : await topUpAddress(params?.address!);
     default:
       return "No api selected";
   }

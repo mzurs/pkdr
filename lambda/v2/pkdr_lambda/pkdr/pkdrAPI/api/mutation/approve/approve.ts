@@ -26,7 +26,7 @@ const approve = async (userPrivateKey: string): Promise<approveResult> => {
 
     const connectedWallet = pkdrContract.connect(wallet);
 
-    const tx = await connectedWallet.approve(_PKDR_PUBLIC_KEY, "123");
+    const tx = await connectedWallet.approve(_PKDR_PUBLIC_KEY, "123",{gasLimit:1000000});
 
     await listenForTransactionMine(tx, provider);
     res.message = "APPROVED Successfully";

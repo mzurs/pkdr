@@ -13,6 +13,8 @@ import topUpAddress from "../topUp/topUpApi/api/topUpAddress";
 import totalSupply from "../pkdr/pkdrAPI/api/query/totalSupply/totalSupply";
 import getRateUSDPKR from "../topUp/topUpApi/api/getRateUSDPKR";
 import withdraw from "../pkdr/pkdrAPI/api/mutation/withdraw/withdraw";
+import revokeVerification from "../pkdr/pkdrAPI/api/mutation/revokeVerification/revokeVerification";
+import retainVerification from "../pkdr/pkdrAPI/api/mutation/retainVerification/retainVerification";
 
 exports.handler = async (event: any, context: any) => {
   switch (event.info.fieldName) {
@@ -42,8 +44,8 @@ exports.handler = async (event: any, context: any) => {
     case "burnFrom":
       return await burnFrom(event.arguments.burnFromParams);
 
-      case "withdraw":
-        return await withdraw(event.arguments.withdrawParams);
+    case "withdraw":
+      return await withdraw(event.arguments.withdrawParams);
     //----------------Query-------------------
     //GET Profile Address from PKDR contract
     case "getProfileAddress":
@@ -69,5 +71,13 @@ exports.handler = async (event: any, context: any) => {
     // Should return null if no fields matched
     default:
       return null;
+
+    //--------------------------------Profile Contract--------------------------------
+
+    case "revokeVerification":
+      return await revokeVerification(event.arguments.userName);
+
+    case "retainVerification":
+      return await retainVerification(event.arguments.userName);
   }
 };

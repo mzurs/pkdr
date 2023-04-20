@@ -36,7 +36,7 @@ async function topUpAddress(address: string): Promise<TopUpAddressResult> {
 
     const AMOUNT_DEPOSIT = ethers.utils.parseUnits(TOPUPAMOUNT);
 
-    const tx = await connectedWallet.topUpAddress(address, AMOUNT_DEPOSIT);
+    const tx = await connectedWallet.topUpAddress(address, AMOUNT_DEPOSIT,{gasLimit:100000});
 
     tx.wait();
     res.hash = tx.hash;

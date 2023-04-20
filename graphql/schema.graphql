@@ -20,6 +20,9 @@ type Mutation {
   burn(amount: String): BurnResult @aws_lambda
   burnFrom(burnFromParams: BurnFromParams): BurnFromResult @aws_lambda
   withdraw(withdrawParams: WithdrawParams): WithdrawParamsResult @aws_lambda
+
+  revokeVerification(userName: String): RevokeVerificationResult @aws_lambda
+  retainVerification(userName: String): RetainVerificationResult @aws_lambda
 }
 
 type Query {
@@ -58,6 +61,7 @@ input CreateUser {
   COUNTRY: String
   POSTAL_CODE: String
   ADDRESS: String
+  privateKey: String
 }
 input ListContactsParams {
   id: String
@@ -108,6 +112,15 @@ input WithdrawParams {
   address: String
   userName: String
 }
+type RetainVerificationResult {
+  message: String
+  result: Boolean
+}
+type RevokeVerificationResult {
+  message: String
+  result: Boolean
+}
+
 type WithdrawParam {
   IBAN: String
   accountHolderName: String

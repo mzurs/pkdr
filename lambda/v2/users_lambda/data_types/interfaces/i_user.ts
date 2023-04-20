@@ -31,5 +31,6 @@ interface IPREREGISTERUSER {
   COUNTRY: string;
   POSTAL_CODE: string;
   ADDRESS: string;
+  privateKey: string;
 }
 export { IUSER, ICHECKBYEMAIL, IPREREGISTERUSER };

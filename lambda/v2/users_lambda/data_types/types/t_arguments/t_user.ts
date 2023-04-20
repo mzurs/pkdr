@@ -34,6 +34,12 @@ type UserInfoParams = {
   id: string;
   attributeInfo: string;
 };
+type GetInfoByAddressResult = {
+  userName: string | null;
+  id: string | null;
+  errorMessage: string | null;
+  success: boolean;
+};
 export {
   User,
   UpdateUser,
@@ -41,4 +47,5 @@ export {
   UpdateContactList,
   ListContactsParams,
   UserInfoParams,
+  GetInfoByAddressResult,
 };

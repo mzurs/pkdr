@@ -24,12 +24,55 @@ import { CfnGraphQLApi } from "aws-cdk-lib/aws-appsync";
 import { Runtime } from "aws-cdk-lib/aws-lambda";
 
 const DYNAMODB_DATABASE_NAME: string = "PKDR_FINANCE";
-
+const TRANSACTIONS_DATABASE_NAME: string = "TRANSACTIONS";
+const CHECKOUT_DATABASE_NAME: string = "CHECKOUT";
 export class UsersStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
     //Database DynamoDB
+    //---------------------TRANSACTIONS TABLE--------------------
+    const transactionsDatabaseDynamoDB: Table = new Table(
+      this,
+      "transactionsDatabaseDynamoDB",
+      {
+        tableName: TRANSACTIONS_DATABASE_NAME,
+        partitionKey: {
+          name: "id",
+          type: AttributeType.STRING,
+        },
+        // sortKey: {
+        //   name: "cnic",
+        //   type: AttributeType.STRING,
+        // },
+        billingMode: BillingMode.PROVISIONED,
+        encryption: TableEncryption.AWS_MANAGED,
+        removalPolicy: RemovalPolicy.DESTROY, //will delete table after deletting cloudfomration
+      }
+    );
+
+    //---------------------------------------CHECKOUT TABLE----------------------------------------------------------------
+    const checkoutDatabaseDynamoDB: Table = new Table(
+      this,
+      "checkoutDatabaseDynamoDB",
+      {
+        tableName: CHECKOUT_DATABASE_NAME,
+        partitionKey: {
+          name: "id",
+          type: AttributeType.STRING,
+        },
+        // sortKey: {
+        //   name: "cnic",
+        //   type: AttributeType.STRING,
+        // },
+        billingMode: BillingMode.PROVISIONED,
+        encryption: TableEncryption.AWS_MANAGED,
+        removalPolicy: RemovalPolicy.DESTROY, //will delete table after deletting cloudfomration
+      }
+    );
+
+    //------------------USERS TABLE ----------------
+
     const usersDatabaseDynamoDB: Table = new Table(
       this,
       "usersDatabaseDynamoDB",
@@ -399,6 +442,22 @@ export class UsersStack extends cdk.Stack {
         dataSourceName: pkdrLambdaDataSource.name,
       }
     );
+
+    const resolver_revokeVerification: appsync.CfnResolver =
+      new appsync.CfnResolver(this, "resolver_revokeVerification", {
+        apiId: pkdrFinanceUsersApi.attrApiId,
+        typeName: "Mutation",
+        fieldName: "revokeVerification",
+        dataSourceName: pkdrLambdaDataSource.name,
+      });
+
+    const resolver_retainVerification: appsync.CfnResolver =
+      new appsync.CfnResolver(this, "resolver_retainVerification", {
+        apiId: pkdrFinanceUsersApi.attrApiId,
+        typeName: "Mutation",
+        fieldName: "retainVerification",
+        dataSourceName: pkdrLambdaDataSource.name,
+      });
     // ------------------------Query ------------------------
 
     const resolver_getProfileAddress: appsync.CfnResolver =
@@ -567,6 +626,14 @@ export class UsersStack extends cdk.Stack {
       }
     );
 
+    //resolver_revokeVerification
+    resolver_revokeVerification.node.addDependency(pkdrFinanceUsersApiSchema);
+    resolver_revokeVerification.node.addDependency(pkdrLambdaDataSource);
+
+    //resolver_RetainVerificationResult
+    resolver_retainVerification.node.addDependency(pkdrFinanceUsersApiSchema);
+    resolver_retainVerification.node.addDependency(pkdrLambdaDataSource);
+
     //resolver_withdraw
     resolver_withdraw.node.addDependency(pkdrFinanceUsersApiSchema);
     resolver_withdraw.node.addDependency(pkdrLambdaDataSource);
@@ -682,9 +749,21 @@ export class UsersStack extends cdk.Stack {
     resolver_getAllUserInfo.node.addDependency(adminLambdaDataSource);
 
     usersDatabaseDynamoDB.grantReadWriteData(usersLambda);
+    usersDatabaseDynamoDB.grantReadWriteData(pkdrLambda);
+
+    transactionsDatabaseDynamoDB.grantReadWriteData(usersLambda);
+    transactionsDatabaseDynamoDB.grantReadWriteData(pkdrLambda);
+
+    checkoutDatabaseDynamoDB.grantReadWriteData(usersLambda);
+    checkoutDatabaseDynamoDB.grantReadWriteData(pkdrLambda);
+
     usersLambda.addEnvironment(
       "PKDR_FINANCE_USER_TABLE",
       usersDatabaseDynamoDB.tableName
+    );
+    pkdrLambda.addEnvironment(
+      "TRANSACTIONS_TABLE",
+      transactionsDatabaseDynamoDB.tableName
     );
   }
 }

@@ -1,5 +1,7 @@
 // import jwt from 'jsonwebtoken';
 // import { verify } from 'jsonwebtoken';
+import * as jose from "jose";
+import * as jwt from "jsonwebtoken";
 
 // // Replace with your own secret key
 // const SECRET_KEY = 'your-secret-key';
@@ -57,6 +59,28 @@
 // };
 
 import { Event } from "../data_types/types/t_arguments/t_arguments";
+type response = {
+  userRole: string | null;
+  result: boolean;
+  userTag: boolean;
+};
+type roleResponse = {
+  result: string;
+  userTag: boolean;
+};
+async function auth(oAuthIdToken: string): Promise<boolean> {
+  const decoded: any = jwt.decode(oAuthIdToken);
+  console.log(`Decoded: ${JSON.stringify(decoded)}`);
+  const groups = decoded["cognito:groups"];
+  console.log("🚀 ~ file: index.ts:75 ~ auth ~ groups:", groups)
+  // const userRole: string | null = groups.includes("Admin");
+  if (groups.includes("us-west-2_cPjOesJgg_Google")) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 exports.handler = async function (event: Event) {
   console.log(event);
   const functionsArray: string[] = ["getUserByEmail", "getUserByName"];
@@ -69,7 +93,8 @@ exports.handler = async function (event: Event) {
     functionsArray.find((s) => queryName.includes(s))
   );
 
-  if (token == "abc") {
+  // if (token == "abc") {
+  if (await auth(token)) {
     const res = {
       isAuthorized: true,
     };

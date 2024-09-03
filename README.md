@@ -10,7 +10,6 @@ The project mainly concentrates on how conventional finance and financial applic
 - It is assumed that the users are relevant and understand the basic actions of using a website.
 - They must know how to perform login and registration.
 - They must have their Debit/Credit Card.
-- They must be relevant to common navbar operations.
 
 ### Software Interfaces
 - Frontend: Typescript, AWS Amplify, Figma.
